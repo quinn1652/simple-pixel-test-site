@@ -1,0 +1,248 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  color: #222;
+}
+
+/* ── Config page ─────────────────────────────────────────────── */
+#config-page {
+  min-height: 100vh;
+  background: #f5f5f7;
+  display: flex;
+  justify-content: center;
+  padding: 48px 16px 80px;
+}
+
+#config-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  max-width: 560px;
+  width: 100%;
+  padding: 40px;
+}
+
+#config-heading {
+  margin-bottom: 36px;
+}
+#config-heading h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+#config-heading p {
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+.config-section {
+  margin-bottom: 28px;
+}
+.config-section h2 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #999;
+  margin-bottom: 10px;
+}
+
+.config-opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 7px;
+  padding: 12px 14px;
+  margin-bottom: 7px;
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+}
+.config-opt:hover { border-color: #bbb; }
+.config-opt-selected { border-color: #222; background: #fafafa; }
+.config-opt input[type="radio"] { margin-top: 3px; flex-shrink: 0; }
+.config-opt-text { display: flex; flex-direction: column; gap: 2px; }
+.config-opt-text strong { font-size: 0.92rem; }
+.config-opt-text span { font-size: 0.8rem; color: #888; }
+
+.pixel-id-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 0.95rem;
+  font-family: monospace;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.12s;
+}
+.pixel-id-input:focus { border-color: #555; }
+
+#start-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.12s;
+}
+#start-btn:hover { background: #444; }
+
+/* ── Quiz banner ─────────────────────────────────────────────── */
+#banner {
+  background: #1a1a1a;
+  color: #ccc;
+  padding: 7px 14px;
+  font-size: 12px;
+  font-family: monospace;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+#banner strong { color: #fff; }
+
+.mode-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+.mode-spa  { background: #1a6b3a; color: #fff; }
+.mode-mpa  { background: #1a4a8a; color: #fff; }
+
+.banner-link { color: #7ab8f5; text-decoration: none; margin-left: 6px; }
+.banner-link:hover { text-decoration: underline; }
+
+/* ── Quiz layout ─────────────────────────────────────────────── */
+#quiz-wrap {
+  max-width: 480px;
+  margin: 32px auto;
+  padding: 0 16px 64px;
+}
+
+#progress-bar {
+  height: 4px;
+  background: #e0e0e0;
+  margin-bottom: 28px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+#progress-fill {
+  height: 100%;
+  background: #333;
+  transition: width 0.3s ease;
+}
+
+/* ── Step annotations ───────────────────────────────────────── */
+.step-note {
+  font-size: 11px;
+  font-family: monospace;
+  color: #999;
+  background: #f4f4f4;
+  padding: 4px 8px;
+  border-radius: 3px;
+  margin-bottom: 14px;
+}
+
+.question-label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* ── Radio options ───────────────────────────────────────────── */
+.option-radio {
+  display: block;
+  padding: 7px 0;
+  cursor: pointer;
+}
+.option-radio input { margin-right: 9px; vertical-align: middle; }
+
+/* ── Big-button options ─────────────────────────────────────── */
+/* Wrapper class must contain "button" — InferredEvents plugin detects clicks by
+   walking up the DOM looking for an ancestor with "button" in its classList. */
+.big-button { margin-bottom: 8px; }
+.big-opt {
+  display: block;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px 16px;
+  cursor: pointer;
+  background: #fff;
+  transition: background 0.12s, border-color 0.12s;
+  user-select: none;
+}
+.big-opt:hover { background: #f6f6f6; border-color: #aaa; }
+
+.show-more { margin-top: 8px; font-size: 0.88rem; }
+
+/* ── Select ─────────────────────────────────────────────────── */
+select {
+  display: block;
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  margin-bottom: 12px;
+}
+
+/* ── Checkbox options ───────────────────────────────────────── */
+.option-checkbox {
+  display: block;
+  padding: 7px 0;
+  cursor: pointer;
+}
+.option-checkbox input { margin-right: 9px; vertical-align: middle; }
+
+/* ── Conditional reveal ─────────────────────────────────────── */
+.additional { margin-top: 16px; }
+.additional label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.92rem; }
+.additional .optional { font-weight: normal; color: #999; font-size: 0.85em; }
+.additional textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  resize: vertical;
+}
+
+/* ── Next / submit buttons ──────────────────────────────────── */
+.next-btn {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.12s;
+}
+.next-btn:hover { background: #444; }
+
+/* ── Completion ─────────────────────────────────────────────── */
+#completion { text-align: center; padding: 48px 0; }
+#completion h2 { font-size: 1.4rem; margin-bottom: 10px; }
+#completion p { color: #777; margin-bottom: 28px; }
+.completion-btn { display: inline-block; width: auto; padding: 12px 32px; }
