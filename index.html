@@ -1,973 +1,998 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Meta Pixel Privacy Demo</title>
-  <style>
-    :root {
-      --blue:    #1877f2;
-      --blue-dk: #166fe5;
-      --green:   #2d9e4f;
-      --red:     #d72828;
-      --orange:  #d97706;
-      --bg:      #f0f2f5;
-      --surface: #ffffff;
-      --border:  #dde1e7;
-      --text:    #1c1e21;
-      --muted:   #65676b;
-      --con-bg:  #141414;
-      --con-txt: #d4d4d4;
-      --con-dim: #6a6a6a;
-      --con-fn:  #dcdcaa;
-      --con-a0:  #9cdcfe;
-      --con-a1:  #c586c0;
-      --con-a2:  #ce9178;
-      --con-obj: #4ec9b0;
-      --con-sup: #f0a500;
-      --con-blk: #f87171;
-      --sidebar-w: 340px;
-      --header-h:  48px;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meta Pixel Event Tester</title>
+    <style>
+      :root {
+        --blue: #1877f2;
+        --blue-dk: #166fe5;
+        --green: #2d9e4f;
+        --red: #d72828;
+        --orange: #d97706;
+        --bg: #f0f2f5;
+        --surface: #ffffff;
+        --border: #dde1e7;
+        --text: #1c1e21;
+        --muted: #65676b;
+        --con-bg: #141414;
+        --con-txt: #d4d4d4;
+        --con-dim: #6a6a6a;
+        --con-fn: #dcdcaa;
+        --con-a0: #9cdcfe;
+        --con-a1: #c586c0;
+        --con-a2: #ce9178;
+        --con-obj: #4ec9b0;
+        --con-sup: #f0a500;
+        --con-blk: #f87171;
+        --sidebar-w: 340px;
+        --header-h: 48px;
+      }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      font-size: 15px;
-      line-height: 1.5;
-    }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        font-size: 15px;
+        line-height: 1.5;
+      }
 
-    /* ── Layout ──────────────────────────────────────────────────────────── */
-    #app {
-      display: grid;
-      grid-template-columns: 1fr var(--sidebar-w);
-      grid-template-rows: var(--header-h) 1fr;
-      min-height: 100vh;
-    }
+      /* ── Layout ─────────────────────────────────────────────────────────── */
+      #app {
+        display: grid;
+        grid-template-columns: 1fr var(--sidebar-w);
+        grid-template-rows: var(--header-h) 1fr;
+        min-height: 100vh;
+      }
 
-    header {
-      grid-column: 1 / -1;
-      background: var(--blue);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 0 20px;
-      font-size: 15px;
-      font-weight: 600;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-    }
-    header .sep  { opacity: 0.4; font-weight: 300; }
-    header .sub  { font-size: 12px; font-weight: 400; opacity: 0.85; font-family: "Courier New", monospace; }
-    header .spacer { flex: 1; }
-
-    .status-chip {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 10px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.2);
-      color: #fff;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .status-chip.accepted { background: var(--green); }
-    .status-chip.declined { background: var(--red); }
-
-    /* ── Main quiz area ───────────────────────────────────────────────────── */
-    main {
-      padding: 32px 24px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      overflow-y: auto;
-    }
-
-    #quiz-card {
-      width: 100%;
-      max-width: 560px;
-      background: var(--surface);
-      border-radius: 12px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.06);
-      overflow: hidden;
-    }
-
-    #progress-bar {
-      height: 4px;
-      background: #e4e6eb;
-    }
-    #progress-fill {
-      height: 100%;
-      background: var(--blue);
-      width: 0%;
-      transition: width 0.35s ease;
-    }
-
-    #quiz-form { padding: 28px 28px 32px; }
-
-    /* ── Step animations ──────────────────────────────────────────────────── */
-    .step { animation: stepIn 0.2s ease; }
-    @keyframes stepIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .step-note {
-      font-size: 11px;
-      font-family: "Courier New", monospace;
-      color: var(--muted);
-      background: #f7f8fa;
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--blue);
-      border-radius: 0 5px 5px 0;
-      padding: 6px 10px;
-      margin-bottom: 18px;
-      line-height: 1.4;
-    }
-
-    .q-label {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 16px;
-      line-height: 1.3;
-    }
-
-    /* ── Radio options ───────────────────────────────────────────────────── */
-    .option-radio {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 11px 14px;
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      transition: border-color 0.12s, background 0.12s;
-      font-size: 15px;
-      user-select: none;
-    }
-    .option-radio:hover { border-color: var(--blue); background: #edf3ff; }
-    .option-radio input[type="radio"] {
-      width: 17px; height: 17px;
-      accent-color: var(--blue);
-      flex-shrink: 0;
-    }
-
-    /* ── Big-button options ──────────────────────────────────────────────── */
-    .big-button { margin-bottom: 10px; }
-    .big-opt {
-      display: block;
-      width: 100%;
-      padding: 16px 20px;
-      background: var(--surface);
-      border: 2px solid var(--border);
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 500;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color 0.12s, background 0.12s, transform 0.1s, box-shadow 0.12s;
-      user-select: none;
-    }
-    .big-opt:hover {
-      border-color: var(--blue);
-      background: #edf3ff;
-      transform: translateY(-1px);
-      box-shadow: 0 3px 10px rgba(24,119,242,0.15);
-    }
-    .big-opt:active { transform: translateY(0); }
-
-    .show-more { text-align: center; margin-top: 4px; }
-    .show-more a {
-      color: var(--blue);
-      font-size: 13px;
-      text-decoration: none;
-    }
-    .show-more a:hover { text-decoration: underline; }
-
-    /* ── Select ──────────────────────────────────────────────────────────── */
-    select {
-      display: block;
-      width: 100%;
-      padding: 10px 12px;
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      font-size: 15px;
-      font-family: inherit;
-      background: #fff;
-      margin-bottom: 14px;
-      appearance: auto;
-    }
-    select:focus { outline: 2px solid var(--blue); border-color: transparent; }
-
-    /* ── Checkboxes ──────────────────────────────────────────────────────── */
-    .option-checkbox {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 11px 14px;
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      font-size: 15px;
-      transition: border-color 0.12s, background 0.12s;
-      user-select: none;
-    }
-    .option-checkbox:hover { border-color: var(--blue); background: #edf3ff; }
-    .option-checkbox input[type="checkbox"] {
-      width: 17px; height: 17px;
-      accent-color: var(--blue);
-      flex-shrink: 0;
-    }
-
-    .additional { margin: 8px 0 14px; }
-    .additional > label {
-      display: block;
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-    .optional { font-style: italic; }
-    textarea {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: inherit;
-      resize: vertical;
-    }
-    textarea:focus { outline: 2px solid var(--blue); border-color: transparent; }
-
-    /* ── Buttons ─────────────────────────────────────────────────────────── */
-    .next-btn {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 12px 28px;
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 15px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.12s;
-    }
-    .next-btn:hover { background: var(--blue-dk); }
-
-    /* ── Completion ──────────────────────────────────────────────────────── */
-    #completion {
-      text-align: center;
-      padding: 32px 0;
-    }
-    #completion h2 { font-size: 26px; margin-bottom: 8px; }
-    #completion p  { color: var(--muted); margin-bottom: 24px; font-size: 14px; }
-
-    /* ── Sidebar ─────────────────────────────────────────────────────────── */
-    aside {
-      background: #1a1a1a;
-      border-left: 1px solid #2a2a2a;
-      display: flex;
-      flex-direction: column;
-      height: calc(100vh - var(--header-h));
-      position: sticky;
-      top: var(--header-h);
-      overflow: hidden;
-      color: var(--con-txt);
-    }
-
-    .panel {
-      padding: 12px 14px;
-      border-bottom: 1px solid #2d2d2d;
-      flex-shrink: 0;
-    }
-    .panel-title {
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--con-dim);
-      margin-bottom: 9px;
-    }
-
-    /* Signals */
-    .sig-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 4px 0;
-      font-size: 12.5px;
-    }
-    .sig-label { color: #b0b0b0; }
-    .sig-val {
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 10px;
-      background: #2d2d2d;
-      color: var(--con-dim);
-      letter-spacing: 0.02em;
-    }
-    .sig-val.ok   { background: #1a3d1a; color: #5cb85c; }
-    .sig-val.warn { background: #3d2e0a; color: #f0a500; }
-    .sig-val.bad  { background: #3d0a0a; color: #f87171; }
-
-    /* Cookies */
-    .ck-row {
-      display: flex;
-      align-items: baseline;
-      gap: 7px;
-      padding: 4px 0;
-      font-family: "Courier New", monospace;
-      font-size: 11.5px;
-    }
-    .ck-name {
-      color: var(--con-a0);
-      min-width: 38px;
-      flex-shrink: 0;
-    }
-    .ck-val {
-      color: var(--con-dim);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      max-width: 220px;
-    }
-    .ck-val.set   { color: #5cb85c; }
-    .ck-val.na    { color: var(--con-sup); font-style: italic; }
-
-    /* Cookie note */
-    .ck-note {
-      font-size: 10.5px;
-      color: var(--con-dim);
-      margin-top: 8px;
-      line-height: 1.4;
-      font-style: italic;
-    }
-
-    /* Event log */
-    #log-header {
-      padding: 10px 14px 8px;
-      border-bottom: 1px solid #2d2d2d;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-shrink: 0;
-    }
-    #log-header .panel-title { margin: 0; }
-    #log-clear {
-      font-size: 10px;
-      color: var(--con-dim);
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
-      padding: 0;
-      text-decoration: underline;
-    }
-    #log-clear:hover { color: #aaa; }
-
-    #event-log {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px 12px;
-      background: var(--con-bg);
-      font-family: "Courier New", Courier, monospace;
-      font-size: 11px;
-      line-height: 1.55;
-    }
-    #event-log::-webkit-scrollbar { width: 5px; }
-    #event-log::-webkit-scrollbar-track { background: #1a1a1a; }
-    #event-log::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
-
-    .log-entry {
-      display: flex;
-      gap: 7px;
-      margin-bottom: 6px;
-      padding-bottom: 6px;
-      border-bottom: 1px solid #222;
-      word-break: break-all;
-    }
-    .log-ts { color: var(--con-dim); white-space: nowrap; flex-shrink: 0; }
-    .log-body { color: var(--con-txt); }
-    .log-fn { color: var(--con-fn); }
-    .log-a0 { color: var(--con-a0); }
-    .log-a1 { color: var(--con-a1); }
-    .log-a2 { color: var(--con-a2); }
-    .log-obj { color: var(--con-obj); }
-    .log-suppressed { color: var(--con-sup); font-style: italic; }
-    .log-blocked    { color: var(--con-blk); font-style: italic; }
-    .log-empty { color: var(--con-dim); font-style: italic; padding: 4px 0; }
-
-    /* ── Consent banner ──────────────────────────────────────────────────── */
-    #consent-banner {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #fff;
-      border-top: 3px solid var(--blue);
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.14);
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      z-index: 200;
-    }
-    #consent-banner .cb-icon { font-size: 28px; flex-shrink: 0; }
-    #consent-banner .cb-text { flex: 1; }
-    #consent-banner .cb-text strong { display: block; margin-bottom: 3px; font-size: 15px; }
-    #consent-banner .cb-text p { font-size: 13px; color: var(--muted); line-height: 1.4; }
-    #consent-banner .cb-btns { display: flex; gap: 10px; flex-shrink: 0; }
-
-    #accept-btn {
-      padding: 10px 22px;
-      background: var(--blue);
-      color: #fff;
-      border: none;
-      border-radius: 7px;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-    }
-    #accept-btn:hover { background: var(--blue-dk); }
-
-    #decline-btn {
-      padding: 10px 18px;
-      background: #fff;
-      color: var(--text);
-      border: 2px solid var(--border);
-      border-radius: 7px;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-    }
-    #decline-btn:hover { background: var(--bg); }
-
-    #consent-banner.hidden { display: none; }
-
-    @media (max-width: 780px) {
-      #app { grid-template-columns: 1fr; grid-template-rows: var(--header-h) 1fr auto; }
-      aside {
-        height: 360px;
-        position: relative;
+      header {
+        grid-column: 1 / -1;
+        background: var(--blue);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 20px;
+        font-size: 15px;
+        font-weight: 600;
+        position: sticky;
         top: 0;
-        border-left: none;
-        border-top: 1px solid #2d2d2d;
+        z-index: 50;
       }
-      #consent-banner { flex-wrap: wrap; }
-      #consent-banner .cb-btns { width: 100%; }
-    }
-  </style>
-</head>
-<body>
-
-<!-- ── Consent banner ──────────────────────────────────────────────────────── -->
-<div id="consent-banner">
-  <div class="cb-icon">🍪</div>
-  <div class="cb-text">
-    <strong>Cookie &amp; Tracking Notice</strong>
-    <p>This demonstration loads the Meta (Facebook) Pixel and fires tracking events to Facebook's servers. Accept to enable tracking; decline to suppress the pixel entirely.</p>
-  </div>
-  <div class="cb-btns">
-    <button id="accept-btn">Accept &amp; Enable Tracking</button>
-    <button id="decline-btn">Decline</button>
-  </div>
-</div>
-
-<!-- ── App shell ───────────────────────────────────────────────────────────── -->
-<div id="app">
-
-  <header>
-    <span>Meta Pixel Privacy Demo</span>
-    <span class="sep">|</span>
-    <span class="sub">Pixel&nbsp;ID:&nbsp;<span id="hdr-pid">—</span></span>
-    <span class="spacer"></span>
-    <span class="status-chip" id="status-chip">Consent pending</span>
-  </header>
-
-  <!-- ── Quiz ─────────────────────────────────────────────────────────────── -->
-  <main>
-    <div id="quiz-card">
-      <div id="progress-bar"><div id="progress-fill"></div></div>
-      <form id="quiz-form" action="#" method="post" autocomplete="off"
-            onsubmit="return false">
-        <!-- populated by JS -->
-      </form>
-    </div>
-  </main>
-
-  <!-- ── Instrumentation sidebar ──────────────────────────────────────────── -->
-  <aside>
-
-    <!-- Signals -->
-    <div class="panel">
-      <div class="panel-title">Signals</div>
-      <div class="sig-row">
-        <span class="sig-label">Pixel script</span>
-        <span class="sig-val" id="sig-pixel">pending</span>
-      </div>
-      <div class="sig-row">
-        <span class="sig-label">Ad blocker</span>
-        <span class="sig-val" id="sig-adblocker">?</span>
-      </div>
-      <div class="sig-row">
-        <span class="sig-label">3rd-party cookies</span>
-        <span class="sig-val" id="sig-3p">?</span>
-      </div>
-      <div class="sig-row">
-        <span class="sig-label">FB login (<code>fr</code>)</span>
-        <span class="sig-val" id="sig-fr">cross-origin</span>
-      </div>
-    </div>
-
-    <!-- Cookies -->
-    <div class="panel">
-      <div class="panel-title">Browser Cookies</div>
-      <div class="ck-row">
-        <span class="ck-name">_fbp</span>
-        <span class="ck-val" id="ck-fbp">—</span>
-      </div>
-      <div class="ck-row">
-        <span class="ck-name">_fbc</span>
-        <span class="ck-val" id="ck-fbc">—</span>
-      </div>
-      <div class="ck-row">
-        <span class="ck-name">fr</span>
-        <span class="ck-val na" id="ck-fr"
-              title="Stored on facebook.com — not readable from this origin">n/a (cross-origin)</span>
-      </div>
-      <p class="ck-note">
-        <code>_fbp</code>/<code>_fbc</code> are first-party cookies set by
-        fbevents.js on <em>this</em> domain. <code>fr</code> lives on
-        facebook.com and travels with pixel beacon requests if 3rd-party
-        cookies are not blocked — it cannot be read here.
-      </p>
-    </div>
-
-    <!-- Event log -->
-    <div id="log-header">
-      <div class="panel-title">Event Log</div>
-      <button id="log-clear">clear</button>
-    </div>
-    <div id="event-log">
-      <div class="log-empty">Waiting for events…</div>
-    </div>
-
-  </aside>
-</div>
-
-<script>
-// ─────────────────────────────────────────────────────────────────────────────
-// CONFIGURATION — change PIXEL_ID or pass ?pixelId=... in the URL
-// ─────────────────────────────────────────────────────────────────────────────
-const PIXEL_ID = (new URLSearchParams(location.search).get('pixelId'))
-               || '1308318914571848';
-
-document.getElementById('hdr-pid').textContent = PIXEL_ID;
-
-// ─────────────────────────────────────────────────────────────────────────────
-// EVENT LOG
-// ─────────────────────────────────────────────────────────────────────────────
-const eventLog = document.getElementById('event-log');
-
-function logFbq(args, special) {
-  const empty = eventLog.querySelector('.log-empty');
-  if (empty) empty.remove();
-
-  const entry = document.createElement('div');
-  entry.className = 'log-entry';
-
-  const d = new Date();
-  const ts = d.toTimeString().slice(0, 8) + '.'
-           + String(d.getMilliseconds()).padStart(3, '0');
-
-  let body;
-  if (special === 'suppressed') {
-    body = '<span class="log-suppressed">Pixel suppressed — user declined consent</span>';
-  } else if (special === 'blocked') {
-    body = '<span class="log-blocked">fbevents.js blocked (ad blocker or network error)</span>';
-  } else {
-    const parts = Array.from(args).map((a, i) => {
-      if (typeof a === 'string') {
-        const cls = ['log-a0', 'log-a1', 'log-a2'][i] || 'log-a2';
-        return `<span class="${cls}">'${a}'</span>`;
+      header .sep { opacity: .4; font-weight: 300; }
+      header .sub {
+        font-size: 12px;
+        font-weight: 400;
+        opacity: .85;
+        font-family: "Courier New", monospace;
       }
-      if (typeof a === 'object' && a !== null) {
-        return `<span class="log-obj">${JSON.stringify(a)}</span>`;
+      header .spacer { flex: 1; }
+
+      .status-chip {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 20px;
+        background: rgba(255,255,255,.2);
+        color: #fff;
+        letter-spacing: .04em;
+        text-transform: uppercase;
       }
-      return String(a);
-    });
-    body = `<span class="log-fn">fbq</span>(<wbr>${parts.join(', ')})`;
-  }
+      .status-chip.accepted { background: var(--green); }
+      .status-chip.declined { background: var(--red); }
 
-  entry.innerHTML = `<span class="log-ts">${ts}</span><span class="log-body">${body}</span>`;
-  eventLog.appendChild(entry);
-  eventLog.scrollTop = eventLog.scrollHeight;
-}
+      /* ── Main content area ──────────────────────────────────────────────── */
+      main {
+        padding: 28px 24px;
+        overflow-y: auto;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+      }
 
-document.getElementById('log-clear').addEventListener('click', () => {
-  eventLog.innerHTML = '<div class="log-empty">Cleared.</div>';
-});
+      .test-grid {
+        width: 100%;
+        max-width: 680px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// COOKIE DISPLAY
-// ─────────────────────────────────────────────────────────────────────────────
-function parseCookies() {
-  const map = {};
-  document.cookie.split(';').forEach(s => {
-    const eq = s.indexOf('=');
-    if (eq > 0) {
-      try { map[s.slice(0, eq).trim()] = decodeURIComponent(s.slice(eq + 1).trim()); }
-      catch (_) { map[s.slice(0, eq).trim()] = s.slice(eq + 1).trim(); }
-    }
-  });
-  return map;
-}
+      /* ── Test cards ─────────────────────────────────────────────────────── */
+      .test-card {
+        background: var(--surface);
+        border-radius: 10px;
+        box-shadow: 0 1px 4px rgba(0,0,0,.10), 0 4px 12px rgba(0,0,0,.05);
+        overflow: hidden;
+      }
 
-function refreshCookies() {
-  const c = parseCookies();
-  [['_fbp', 'ck-fbp'], ['_fbc', 'ck-fbc']].forEach(([name, id]) => {
-    const el = document.getElementById(id);
-    const v = c[name];
-    if (v) {
-      el.textContent = v.length > 38 ? v.slice(0, 38) + '…' : v;
-      el.title = v;
-      el.className = 'ck-val set';
-    } else {
-      el.textContent = '—';
-      el.className = 'ck-val';
-      el.removeAttribute('title');
-    }
-  });
-}
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 20px 0;
+      }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SIGNALS
-// ─────────────────────────────────────────────────────────────────────────────
-let pixelLoaded = null; // null=pending | true=loaded | false=blocked
+      .card-tag {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .07em;
+        padding: 3px 8px;
+        border-radius: 4px;
+        flex-shrink: 0;
+      }
+      .tag-inferred { background: #fff3cd; color: #856404; }
+      .tag-explicit  { background: #dbeafe; color: #1d4ed8; }
+      .tag-aam       { background: #ede9fe; color: #6d28d9; }
 
-function setSig(id, text, cls) {
-  const el = document.getElementById(id);
-  el.textContent = text;
-  el.className = 'sig-val' + (cls ? ' ' + cls : '');
-}
+      .card-title {
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 1.3;
+      }
 
-function updateSignals() {
-  if (pixelLoaded === true) {
-    setSig('sig-pixel',     'Loaded',       'ok');
-    setSig('sig-adblocker', 'Not detected', 'ok');
-    setSig('sig-3p',        'See note →',   '');
-  } else if (pixelLoaded === false && consentState === 'declined') {
-    setSig('sig-pixel',     'Suppressed',   'warn');
-    setSig('sig-adblocker', '?',            '');
-    setSig('sig-3p',        '?',            '');
-  } else if (pixelLoaded === false) {
-    setSig('sig-pixel',     'Blocked',      'bad');
-    setSig('sig-adblocker', 'Detected',     'warn');
-    setSig('sig-3p',        '?',            '');
-  } else {
-    setSig('sig-pixel',     'Pending',      '');
-    setSig('sig-adblocker', '?',            '');
-    setSig('sig-3p',        '?',            '');
-  }
-  // fr is always cross-origin from our page
-  setSig('sig-fr', 'cross-origin', 'warn');
-}
+      .card-body {
+        padding: 12px 20px 20px;
+      }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// META PIXEL STUB + CONSENT GATE
-// ─────────────────────────────────────────────────────────────────────────────
-let consentState = 'pending';
-let pixelReady   = false;
+      .card-note {
+        font-size: 11px;
+        font-family: "Courier New", monospace;
+        color: var(--muted);
+        background: #f7f8fa;
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--blue);
+        border-radius: 0 5px 5px 0;
+        padding: 6px 10px;
+        margin-bottom: 16px;
+        line-height: 1.4;
+      }
+      .card-note.note-inferred { border-left-color: #d97706; }
+      .card-note.note-explicit  { border-left-color: var(--blue); }
+      .card-note.note-aam       { border-left-color: #7c3aed; }
 
-function installStub() {
-  if (window.fbq) return;
-  // Standard FB Pixel stub — all calls flow through the wrapper so our
-  // logging hook fires both before and after fbevents.js loads.
-  const n = window.fbq = function () {
-    logFbq(arguments);
-    if (n.callMethod) {
-      n.callMethod.apply(n, arguments);
-    } else {
-      n.queue.push(arguments);
-    }
-  };
-  window._fbq = n;
-  n.push = n; n.loaded = true; n.version = '2.0'; n.queue = [];
-}
+      .card-feedback {
+        font-size: 12px;
+        color: var(--green);
+        font-family: "Courier New", monospace;
+        margin-top: 10px;
+        min-height: 18px;
+      }
 
-function loadFbevents() {
-  return new Promise((resolve, reject) => {
-    const s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://connect.facebook.net/en_US/fbevents.js';
-    s.onload  = () => { pixelLoaded = true;  resolve(); };
-    s.onerror = () => { pixelLoaded = false; reject(); };
-    document.head.appendChild(s);
-  });
-}
+      /* ── Radio options ───────────────────────────────────────────────────── */
+      .option-radio {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 11px 14px;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        margin-bottom: 8px;
+        cursor: pointer;
+        transition: border-color .12s, background .12s;
+        font-size: 15px;
+        user-select: none;
+      }
+      .option-radio:hover { border-color: var(--blue); background: #edf3ff; }
+      .option-radio input[type="radio"] {
+        width: 17px;
+        height: 17px;
+        accent-color: var(--blue);
+        flex-shrink: 0;
+      }
 
-async function initPixel() {
-  if (pixelReady) return;
-  pixelReady = true;
-  installStub();
-  try {
-    await loadFbevents();
-    fbq('init', PIXEL_ID);
-    fbq('track', 'PageView');
-    refreshCookies();
-    updateSignals();
-    // _fbp is written async; poll a couple of times
-    setTimeout(refreshCookies, 600);
-    setTimeout(refreshCookies, 2500);
-  } catch (_) {
-    logFbq([], 'blocked');
-    updateSignals();
-  }
-}
+      /* ── Big-button options ─────────────────────────────────────────────── */
+      .big_button { margin-bottom: 10px; }
+      .big-opt {
+        display: block;
+        width: 100%;
+        padding: 16px 20px;
+        background: var(--surface);
+        border: 2px solid var(--border);
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: 500;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color .12s, background .12s, transform .1s, box-shadow .12s;
+        user-select: none;
+      }
+      .big-opt:hover {
+        border-color: var(--blue);
+        background: #edf3ff;
+        transform: translateY(-1px);
+        box-shadow: 0 3px 10px rgba(24,119,242,.15);
+      }
+      .big-opt:active { transform: translateY(0); }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CONSENT BANNER
-// ─────────────────────────────────────────────────────────────────────────────
-const consentBanner = document.getElementById('consent-banner');
-const statusChip    = document.getElementById('status-chip');
+      /* ── Select ─────────────────────────────────────────────────────────── */
+      select {
+        display: block;
+        width: 100%;
+        padding: 10px 12px;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: inherit;
+        background: #fff;
+        margin-bottom: 4px;
+        appearance: auto;
+      }
+      select:focus { outline: 2px solid var(--blue); border-color: transparent; }
 
-document.getElementById('accept-btn').addEventListener('click', () => {
-  consentState = 'accepted';
-  consentBanner.classList.add('hidden');
-  statusChip.textContent = 'Tracking: Accepted';
-  statusChip.className   = 'status-chip accepted';
-  initPixel();
-});
+      /* ── Email input ────────────────────────────────────────────────────── */
+      .email-input {
+        display: block;
+        width: 100%;
+        padding: 10px 12px;
+        border: 2px solid var(--border);
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: inherit;
+        background: #fff;
+        margin-bottom: 12px;
+      }
+      .email-input:focus { outline: 2px solid #7c3aed; border-color: transparent; }
 
-document.getElementById('decline-btn').addEventListener('click', () => {
-  consentState = 'declined';
-  consentBanner.classList.add('hidden');
-  statusChip.textContent = 'Tracking: Declined';
-  statusChip.className   = 'status-chip declined';
-  installStub();
-  pixelLoaded = false;
-  logFbq([], 'suppressed');
-  updateSignals();
-});
+      /* ── Buttons ────────────────────────────────────────────────────────── */
+      .next-btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 11px 24px;
+        background: var(--blue);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: background .12s;
+      }
+      .next-btn:hover { background: var(--blue-dk); }
+      .next-btn.btn-purple { background: #7c3aed; }
+      .next-btn.btn-purple:hover { background: #6d28d9; }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// QUIZ
-// ─────────────────────────────────────────────────────────────────────────────
-const TOTAL_STEPS  = 5;
-let step     = 0;
-const form   = document.getElementById('quiz-form');
-const pfill  = document.getElementById('progress-fill');
+      /* ── Sidebar ─────────────────────────────────────────────────────────── */
+      aside {
+        background: #1a1a1a;
+        border-left: 1px solid #2a2a2a;
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - var(--header-h));
+        position: sticky;
+        top: var(--header-h);
+        overflow: hidden;
+        color: var(--con-txt);
+      }
 
-function advance() {
-  step = Math.min(step + 1, TOTAL_STEPS);
-  pfill.style.width = (step / TOTAL_STEPS * 100) + '%';
-  render();
-  form.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
+      .panel { padding: 12px 14px; border-bottom: 1px solid #2d2d2d; flex-shrink: 0; }
+      .panel-title {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        color: var(--con-dim);
+        margin-bottom: 9px;
+      }
 
-function render() {
-  form.innerHTML = '';
-  const div = document.createElement('div');
-  div.className = 'step';
-  if (step >= TOTAL_STEPS) { renderDone(div); }
-  else { [s0, s1, s2, s3, s4][step](div); }
-  form.appendChild(div);
-}
+      .sig-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 12.5px; }
+      .sig-label { color: #b0b0b0; }
+      .sig-val {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 10px;
+        background: #2d2d2d;
+        color: var(--con-dim);
+        letter-spacing: .02em;
+      }
+      .sig-val.ok  { background: #1a3d1a; color: #5cb85c; }
+      .sig-val.warn { background: #3d2e0a; color: #f0a500; }
+      .sig-val.bad  { background: #3d0a0a; color: #f87171; }
 
-/* helpers */
-function mkNote(t) {
-  const p = document.createElement('p');
-  p.className = 'step-note';
-  p.textContent = t;
-  return p;
-}
-function mkLabel(t) {
-  const d = document.createElement('div');
-  d.className = 'q-label';
-  d.textContent = t;
-  return d;
-}
+      .ck-row { display: flex; align-items: baseline; gap: 7px; padding: 4px 0; font-family: "Courier New", monospace; font-size: 11.5px; }
+      .ck-name { color: var(--con-a0); min-width: 38px; flex-shrink: 0; }
+      .ck-val { color: var(--con-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
+      .ck-val.set { color: #5cb85c; }
+      .ck-val.na  { color: var(--con-sup); font-style: italic; }
+      .ck-note { font-size: 10.5px; color: var(--con-dim); margin-top: 8px; line-height: 1.4; font-style: italic; }
 
-// Step 0 — visible radio inputs
-// Input element click → no SubscribedButtonClick; label text click → fires
-function s0(div) {
-  div.appendChild(mkNote(
-    'Radio — clicking the input itself: no SubscribedButtonClick  ·  clicking label text: fires'
-  ));
-  div.appendChild(mkLabel('What brings you here today?'));
-  ['Just exploring', 'A specific goal in mind', 'Someone recommended this', 'Not sure yet']
-    .forEach((opt, i) => {
-      const lbl = document.createElement('label');
-      lbl.className = 'option-radio';
-      const inp = document.createElement('input');
-      inp.type = 'radio'; inp.name = 'q0'; inp.value = i;
-      inp.addEventListener('change', () => setTimeout(advance, 220));
-      lbl.appendChild(inp);
-      lbl.appendChild(document.createTextNode(' ' + opt));
-      div.appendChild(lbl);
-    });
-}
+      #log-header {
+        padding: 10px 14px 8px;
+        border-bottom: 1px solid #2d2d2d;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      #log-header .panel-title { margin: 0; }
+      #log-clear {
+        font-size: 10px;
+        color: var(--con-dim);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        padding: 0;
+        text-decoration: underline;
+      }
+      #log-clear:hover { color: #aaa; }
 
-// Step 1 — big-button (hidden radio + label wrapper with class "big-button")
-// fbevents.js InferredEvents walks up the DOM from the click target and
-// fires SubscribedButtonClick when it finds a node whose className contains "button"
-function s1(div) {
-  div.appendChild(mkNote(
-    'Big button — wrapper class "big-button" causes fbevents.js to fire SubscribedButtonClick on every click'
-  ));
-  div.appendChild(mkLabel('How would you describe your current situation?'));
+      #event-log {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px 12px;
+        background: var(--con-bg);
+        font-family: "Courier New", Courier, monospace;
+        font-size: 11px;
+        line-height: 1.55;
+      }
+      #event-log::-webkit-scrollbar { width: 5px; }
+      #event-log::-webkit-scrollbar-track { background: #1a1a1a; }
+      #event-log::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
 
-  const showMoreP = document.createElement('p');
-  showMoreP.className = 'show-more';
-  showMoreP.innerHTML = '<a href="#">Show more options</a>';
+      .log-entry { display: flex; gap: 7px; margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid #222; word-break: break-all; }
+      .log-ts    { color: var(--con-dim); white-space: nowrap; flex-shrink: 0; }
+      .log-body  { color: var(--con-txt); }
+      .log-fn    { color: var(--con-fn); }
+      .log-a0    { color: var(--con-a0); }
+      .log-a1    { color: var(--con-a1); }
+      .log-a2    { color: var(--con-a2); }
+      .log-obj   { color: var(--con-obj); }
+      .log-suppressed { color: var(--con-sup); font-style: italic; }
+      .log-blocked    { color: var(--con-blk); font-style: italic; }
+      .log-empty      { color: var(--con-dim); font-style: italic; padding: 4px 0; }
+      .log-inferred   { color: var(--con-sup); font-size: 10px; opacity: .8; }
+      .log-aam        { color: #a78bfa; font-size: 10px; }
 
-  function addBtns(opts, startIdx) {
-    opts.forEach((opt, i) => {
-      const wrap = document.createElement('div');
-      wrap.className = 'big-button';
-      const lbl = document.createElement('label');
-      lbl.className = 'big-opt';
-      const inp = document.createElement('input');
-      inp.type = 'radio'; inp.name = 'q1'; inp.value = startIdx + i;
-      inp.style.display = 'none';
-      lbl.appendChild(inp);
-      lbl.appendChild(document.createTextNode(opt));
-      lbl.addEventListener('click', e => { e.preventDefault(); setTimeout(advance, 220); });
-      wrap.appendChild(lbl);
-      div.insertBefore(wrap, showMoreP);
-    });
-  }
+      /* ── Consent banner ─────────────────────────────────────────────────── */
+      #consent-banner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-top: 3px solid var(--blue);
+        box-shadow: 0 -4px 20px rgba(0,0,0,.14);
+        padding: 16px 24px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        z-index: 200;
+      }
+      #consent-banner .cb-icon  { font-size: 28px; flex-shrink: 0; }
+      #consent-banner .cb-text  { flex: 1; }
+      #consent-banner .cb-text strong { display: block; margin-bottom: 3px; font-size: 15px; }
+      #consent-banner .cb-text p { font-size: 13px; color: var(--muted); line-height: 1.4; }
+      #consent-banner .cb-btns  { display: flex; gap: 10px; flex-shrink: 0; }
 
-  addBtns(['Going well overall', 'Some challenges', 'Pretty difficult'], 0);
-  div.appendChild(showMoreP);
+      #accept-btn {
+        padding: 10px 22px;
+        background: var(--blue);
+        color: #fff;
+        border: none;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      #accept-btn:hover { background: var(--blue-dk); }
 
-  showMoreP.querySelector('a').addEventListener('click', e => {
-    e.preventDefault();
-    showMoreP.remove();
-    addBtns(['Very difficult', 'In crisis'], 3);
-  });
-}
+      #decline-btn {
+        padding: 10px 18px;
+        background: #fff;
+        color: var(--text);
+        border: 2px solid var(--border);
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      #decline-btn:hover { background: var(--bg); }
+      #consent-banner.hidden { display: none; }
 
-// Step 2 — select with auto-advance on change
-// onChange is not a button-like interaction → no SubscribedButtonClick
-function s2(div) {
-  div.appendChild(mkNote(
-    'Select auto-advance — onChange is not a button click → no SubscribedButtonClick'
-  ));
-  div.appendChild(mkLabel('How old are you?'));
-  const sel = document.createElement('select');
-  sel.name = 'q2';
-  let html = '<option value="">Select your age</option>';
-  for (let a = 18; a <= 80; a++) html += `<option value="${a}">${a}</option>`;
-  html += '<option value="81">80+</option>';
-  sel.innerHTML = html;
-  sel.addEventListener('change', e => { if (e.target.value) setTimeout(advance, 220); });
-  div.appendChild(sel);
-}
+      @media (max-width: 780px) {
+        #app { grid-template-columns: 1fr; grid-template-rows: var(--header-h) 1fr auto; }
+        aside { height: 360px; position: relative; top: 0; border-left: none; border-top: 1px solid #2d2d2d; }
+        #consent-banner { flex-wrap: wrap; }
+        #consent-banner .cb-btns { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
 
-// Step 3 — select + explicit Next button
-// Select change: no SubscribedButtonClick; button click inside form: fires
-function s3(div) {
-  div.appendChild(mkNote(
-    'Select + Next button — select: no SubscribedButtonClick  ·  Next button click: fires'
-  ));
-  div.appendChild(mkLabel('Which region are you in?'));
+    <!-- ── Consent banner ──────────────────────────────────────────────────── -->
+    <div id="consent-banner">
+      <div class="cb-icon">🍪</div>
+      <div class="cb-text">
+        <strong>Cookie &amp; Tracking Notice</strong>
+        <p>This demonstration loads the Meta (Facebook) Pixel and fires tracking events to Facebook's servers. Accept to enable tracking; decline to suppress the pixel entirely.</p>
+      </div>
+      <div class="cb-btns">
+        <button id="accept-btn">Accept &amp; Enable Tracking</button>
+        <button id="decline-btn">Decline</button>
+      </div>
+    </div>
 
-  const sel = document.createElement('select');
-  sel.name = 'q3';
-  sel.innerHTML = '<option value="">Select your region</option>' +
-    ['Northeast', 'Southeast', 'Midwest', 'Southwest', 'West Coast', 'Pacific Northwest', 'International']
-      .map((r, i) => `<option value="${i+1}">${r}</option>`).join('');
-  div.appendChild(sel);
+    <!-- ── App shell ───────────────────────────────────────────────────────── -->
+    <div id="app">
+      <header>
+        <span>Meta Pixel Event Tester</span>
+        <span class="sep">|</span>
+        <span class="sub">Pixel&nbsp;ID:&nbsp;<span id="hdr-pid">—</span></span>
+        <span class="spacer"></span>
+        <span class="status-chip" id="status-chip">Consent pending</span>
+      </header>
 
-  const btn = document.createElement('button');
-  btn.type = 'button'; btn.className = 'next-btn'; btn.textContent = 'Next →';
-  btn.addEventListener('click', advance);
-  div.appendChild(btn);
-}
+      <main>
+        <div class="test-grid" id="test-grid">
+          <!-- populated by JS -->
+        </div>
+      </main>
 
-// Step 4 — checkboxes + conditional textarea + Next button
-// Checkbox clicks: no SubscribedButtonClick; Next button: fires
-function s4(div) {
-  div.appendChild(mkNote(
-    'Checkboxes — no SubscribedButtonClick  ·  Next button click: fires'
-  ));
-  div.appendChild(mkLabel('Which of the following apply to you?'));
+      <!-- ── Instrumentation sidebar ─────────────────────────────────────── -->
+      <aside>
+        <div class="panel">
+          <div class="panel-title">Signals</div>
+          <div class="sig-row">
+            <span class="sig-label">Pixel script</span>
+            <span class="sig-val" id="sig-pixel">pending</span>
+          </div>
+          <div class="sig-row">
+            <span class="sig-label">Ad blocker</span>
+            <span class="sig-val" id="sig-adblocker">?</span>
+          </div>
+          <div class="sig-row">
+            <span class="sig-label">3rd-party cookies</span>
+            <span class="sig-val" id="sig-3p">?</span>
+          </div>
+          <div class="sig-row">
+            <span class="sig-label">FB login (<code>fr</code>)</span>
+            <span class="sig-val" id="sig-fr">cross-origin</span>
+          </div>
+        </div>
 
-  const checked = {};
-  const extras = document.createElement('div');
-  extras.className = 'additional';
-  extras.style.display = 'none';
-  extras.innerHTML =
-    '<label>Anything else? <span class="optional">(optional)</span>' +
-    '<textarea name="q4_extra" rows="3"></textarea></label>';
+        <div class="panel">
+          <div class="panel-title">Browser Cookies</div>
+          <div class="ck-row">
+            <span class="ck-name">_fbp</span>
+            <span class="ck-val" id="ck-fbp">—</span>
+          </div>
+          <div class="ck-row">
+            <span class="ck-name">_fbc</span>
+            <span class="ck-val" id="ck-fbc">—</span>
+          </div>
+          <div class="ck-row">
+            <span class="ck-name">fr</span>
+            <span class="ck-val na" id="ck-fr" title="Stored on facebook.com — not readable from this origin">n/a (cross-origin)</span>
+          </div>
+          <p class="ck-note">
+            <code>_fbp</code>/<code>_fbc</code> are first-party cookies set by fbevents.js on <em>this</em> domain.
+            <code>fr</code> lives on facebook.com and travels with pixel beacon requests if 3rd-party cookies are not blocked — it cannot be read here.
+          </p>
+        </div>
 
-  ['Currently a student', 'Employed full-time', 'Employed part-time',
-   'Self-employed', 'Not currently employed'].forEach((opt, i) => {
-    const lbl = document.createElement('label');
-    lbl.className = 'option-checkbox';
-    const inp = document.createElement('input');
-    inp.type = 'checkbox'; inp.name = 'q4'; inp.value = i;
-    inp.addEventListener('change', () => {
-      checked[i] = inp.checked;
-      extras.style.display = Object.values(checked).some(Boolean) ? 'block' : 'none';
-    });
-    lbl.appendChild(inp);
-    lbl.appendChild(document.createTextNode(' ' + opt));
-    div.appendChild(lbl);
-  });
+        <div id="log-header">
+          <div class="panel-title">Event Log</div>
+          <button id="log-clear">clear</button>
+        </div>
+        <div id="event-log">
+          <div class="log-empty">Waiting for events…</div>
+        </div>
+      </aside>
+    </div>
 
-  div.appendChild(extras);
+    <script>
+      // ── CONFIGURATION ────────────────────────────────────────────────────────
+      const PIXEL_ID =
+        new URLSearchParams(location.search).get("pixelId") || "1308318914571848";
 
-  const btn = document.createElement('button');
-  btn.type = 'button'; btn.className = 'next-btn'; btn.textContent = 'Next →';
-  btn.addEventListener('click', advance);
-  div.appendChild(btn);
-}
+      document.getElementById("hdr-pid").textContent = PIXEL_ID;
 
-// Completion — fire a Lead event (mirrors BH funnel completion)
-function renderDone(div) {
-  if (consentState === 'accepted' && window.fbq) {
-    fbq('track', 'Lead');
-    refreshCookies();
-  }
-  div.id = 'completion';
-  div.innerHTML =
-    '<h2>All done!</h2>' +
-    '<p>Survey complete.' +
-    (consentState === 'accepted' ? ' A <strong>Lead</strong> event has been fired.' : '') +
-    '</p>';
-  const btn = document.createElement('button');
-  btn.type = 'button'; btn.className = 'next-btn';
-  btn.textContent = '← Start over';
-  btn.addEventListener('click', () => {
-    step = 0;
-    pfill.style.width = '0%';
-    render();
-  });
-  div.appendChild(btn);
-}
+      // ── EVENT LOG ────────────────────────────────────────────────────────────
+      const eventLog = document.getElementById("event-log");
+      const _fbqWrapperLog = {};
 
-// ─────────────────────────────────────────────────────────────────────────────
-// INIT
-// ─────────────────────────────────────────────────────────────────────────────
-updateSignals();
-refreshCookies();
-render();
-</script>
+      function logFbq(args, special) {
+        const empty = eventLog.querySelector(".log-empty");
+        if (empty) empty.remove();
 
-</body>
+        const entry = document.createElement("div");
+        entry.className = "log-entry";
+
+        const d = new Date();
+        const ts =
+          d.toTimeString().slice(0, 8) + "." +
+          String(d.getMilliseconds()).padStart(3, "0");
+
+        let body;
+        if (special === "suppressed") {
+          body = '<span class="log-suppressed">Pixel suppressed — user declined consent</span>';
+        } else if (special === "blocked") {
+          body = '<span class="log-blocked">fbevents.js blocked (ad blocker or network error)</span>';
+        } else if (special === "inferred") {
+          const ev = args[0];
+          const extra = args[1] ? ` <span class="log-aam">[${args[1]}]</span>` : "";
+          body =
+            `<span class="log-fn">fbq</span>(<wbr>` +
+            `<span class="log-a0">'trackCustom'</span>, ` +
+            `<span class="log-a1">'${ev}'</span>)` +
+            ` <span class="log-inferred">[InferredEvents]</span>${extra}`;
+        } else {
+          const evKey = Array.from(args)[1];
+          if (evKey) _fbqWrapperLog[evKey] = Date.now();
+          const parts = Array.from(args).map((a, i) => {
+            if (typeof a === "string") {
+              const cls = ["log-a0", "log-a1", "log-a2"][i] || "log-a2";
+              return `<span class="${cls}">'${a}'</span>`;
+            }
+            if (typeof a === "object" && a !== null) {
+              return `<span class="log-obj">${JSON.stringify(a)}</span>`;
+            }
+            return String(a);
+          });
+          body = `<span class="log-fn">fbq</span>(<wbr>${parts.join(", ")})`;
+        }
+
+        entry.innerHTML = `<span class="log-ts">${ts}</span><span class="log-body">${body}</span>`;
+        eventLog.appendChild(entry);
+        eventLog.scrollTop = eventLog.scrollHeight;
+      }
+
+      document.getElementById("log-clear").addEventListener("click", () => {
+        eventLog.innerHTML = '<div class="log-empty">Cleared.</div>';
+      });
+
+      // ── BEACON INTERCEPTOR ───────────────────────────────────────────────────
+      // Catches InferredEvents beacons (SubscribedButtonClick etc.) sent directly
+      // via Image/sendBeacon/XHR without going through window.fbq.
+      (function () {
+        function parseFbBeacon(url) {
+          if (typeof url !== "string" || !url.includes("facebook.com/tr")) return null;
+          try {
+            const qs = new URLSearchParams(url.split("?")[1] || "");
+            const ev = qs.get("ev");
+            const em = qs.get("ud[em]");
+            return ev ? { ev, em } : null;
+          } catch (_) { return null; }
+        }
+
+        function onBeacon(url) {
+          const parsed = parseFbBeacon(url);
+          if (!parsed) return;
+          const { ev, em } = parsed;
+          if (_fbqWrapperLog[ev] && Date.now() - _fbqWrapperLog[ev] < 500) return;
+          const extra = em ? `ud[em]=${em.slice(0, 8)}…` : null;
+          logFbq(extra ? [ev, extra] : [ev], "inferred");
+        }
+
+        const imgDesc = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, "src");
+        if (imgDesc && imgDesc.set) {
+          Object.defineProperty(HTMLImageElement.prototype, "src", {
+            configurable: true,
+            get: imgDesc.get,
+            set(val) { onBeacon(val); imgDesc.set.call(this, val); },
+          });
+        }
+
+        if (navigator.sendBeacon) {
+          const origBeacon = navigator.sendBeacon.bind(navigator);
+          navigator.sendBeacon = function (url, data) {
+            onBeacon(typeof url === "string" ? url : String(url));
+            return origBeacon(url, data);
+          };
+        }
+
+        const origOpen = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function (method, url) {
+          onBeacon(typeof url === "string" ? url : String(url));
+          return origOpen.apply(this, arguments);
+        };
+      })();
+
+      // ── COOKIE DISPLAY ───────────────────────────────────────────────────────
+      function parseCookies() {
+        const map = {};
+        document.cookie.split(";").forEach((s) => {
+          const eq = s.indexOf("=");
+          if (eq > 0) {
+            try { map[s.slice(0, eq).trim()] = decodeURIComponent(s.slice(eq + 1).trim()); }
+            catch (_) { map[s.slice(0, eq).trim()] = s.slice(eq + 1).trim(); }
+          }
+        });
+        return map;
+      }
+
+      function refreshCookies() {
+        const c = parseCookies();
+        [["_fbp", "ck-fbp"], ["_fbc", "ck-fbc"]].forEach(([name, id]) => {
+          const el = document.getElementById(id);
+          const v = c[name];
+          if (v) {
+            el.textContent = v.length > 38 ? v.slice(0, 38) + "…" : v;
+            el.title = v;
+            el.className = "ck-val set";
+          } else {
+            el.textContent = "—";
+            el.className = "ck-val";
+            el.removeAttribute("title");
+          }
+        });
+      }
+
+      // ── SIGNALS ──────────────────────────────────────────────────────────────
+      let pixelLoaded = null;
+
+      function setSig(id, text, cls) {
+        const el = document.getElementById(id);
+        el.textContent = text;
+        el.className = "sig-val" + (cls ? " " + cls : "");
+      }
+
+      function updateSignals() {
+        if (pixelLoaded === true) {
+          setSig("sig-pixel", "Loaded", "ok");
+          setSig("sig-adblocker", "Not detected", "ok");
+          setSig("sig-3p", "See note →", "");
+        } else if (pixelLoaded === false && consentState === "declined") {
+          setSig("sig-pixel", "Suppressed", "warn");
+          setSig("sig-adblocker", "?", "");
+          setSig("sig-3p", "?", "");
+        } else if (pixelLoaded === false) {
+          setSig("sig-pixel", "Blocked", "bad");
+          setSig("sig-adblocker", "Detected", "warn");
+          setSig("sig-3p", "?", "");
+        } else {
+          setSig("sig-pixel", "Pending", "");
+          setSig("sig-adblocker", "?", "");
+          setSig("sig-3p", "?", "");
+        }
+        setSig("sig-fr", "cross-origin", "warn");
+      }
+
+      // ── PIXEL STUB + CONSENT GATE ────────────────────────────────────────────
+      let consentState = "pending";
+      let pixelReady = false;
+
+      function installStub() {
+        if (window.fbq) return;
+        const n = (window.fbq = function () {
+          logFbq(arguments);
+          if (n.callMethod) { n.callMethod.apply(n, arguments); }
+          else { n.queue.push(arguments); }
+        });
+        window._fbq = n;
+        n.push = n;
+        n.loaded = true;
+        n.version = "2.0";
+        n.queue = [];
+      }
+
+      function loadFbevents() {
+        return new Promise((resolve, reject) => {
+          const s = document.createElement("script");
+          s.async = true;
+          s.src = "./fbevents.js";
+          s.onload = () => { pixelLoaded = true; resolve(); };
+          s.onerror = () => { pixelLoaded = false; reject(); };
+          document.head.appendChild(s);
+        });
+      }
+
+      async function initPixel() {
+        if (pixelReady) return;
+        pixelReady = true;
+        installStub();
+        try {
+          await loadFbevents();
+          fbq("init", PIXEL_ID);
+          fbq("track", "PageView");
+          refreshCookies();
+          updateSignals();
+          setTimeout(refreshCookies, 600);
+          setTimeout(refreshCookies, 2500);
+        } catch (_) {
+          logFbq([], "blocked");
+          updateSignals();
+        }
+      }
+
+      // ── CONSENT BANNER ───────────────────────────────────────────────────────
+      const consentBanner = document.getElementById("consent-banner");
+      const statusChip = document.getElementById("status-chip");
+
+      document.getElementById("accept-btn").addEventListener("click", () => {
+        consentState = "accepted";
+        consentBanner.classList.add("hidden");
+        statusChip.textContent = "Tracking: Accepted";
+        statusChip.className = "status-chip accepted";
+        initPixel();
+      });
+
+      document.getElementById("decline-btn").addEventListener("click", () => {
+        consentState = "declined";
+        consentBanner.classList.add("hidden");
+        statusChip.textContent = "Tracking: Declined";
+        statusChip.className = "status-chip declined";
+        installStub();
+        pixelLoaded = false;
+        logFbq([], "suppressed");
+        updateSignals();
+      });
+
+      // ── TEST CARD BUILDER ────────────────────────────────────────────────────
+
+      function makeCard(tag, tagClass, noteClass, title, note) {
+        const card = document.createElement("div");
+        card.className = "test-card";
+
+        const hdr = document.createElement("div");
+        hdr.className = "card-header";
+
+        const tagEl = document.createElement("span");
+        tagEl.className = `card-tag ${tagClass}`;
+        tagEl.textContent = tag;
+
+        const titleEl = document.createElement("h3");
+        titleEl.className = "card-title";
+        titleEl.textContent = title;
+
+        hdr.appendChild(tagEl);
+        hdr.appendChild(titleEl);
+
+        const body = document.createElement("div");
+        body.className = "card-body";
+
+        const noteEl = document.createElement("p");
+        noteEl.className = `card-note ${noteClass}`;
+        noteEl.textContent = note;
+
+        body.appendChild(noteEl);
+        card.appendChild(hdr);
+        card.appendChild(body);
+        return { card, body };
+      }
+
+      function makeFeedback(body) {
+        const fb = document.createElement("div");
+        fb.className = "card-feedback";
+        body.appendChild(fb);
+        return fb;
+      }
+
+      function flashFeedback(el, msg) {
+        el.textContent = msg;
+        clearTimeout(el._t);
+        el._t = setTimeout(() => { el.textContent = ""; }, 3000);
+      }
+
+      function buildCards() {
+        const grid = document.getElementById("test-grid");
+
+        // ── Card 1: div.big_button > label.radio → SubscribedButtonClick (InferredEvents) ──
+        {
+          const { card, body } = makeCard(
+            "InferredEvents", "tag-inferred", "note-inferred",
+            "SubscribedButtonClick — div.big_button",
+            "Mirrors BH 2021 HTML. fbevents.js InferredEvents fires SubscribedButtonClick automatically on every label click. No explicit fbq() call is made."
+          );
+          const form = document.createElement("form");
+          form.action = "#";
+          form.onsubmit = () => false;
+          const fb = makeFeedback(body);
+
+          ["Going well overall", "Some challenges", "Pretty difficult"].forEach((opt) => {
+            const wrap = document.createElement("div");
+            wrap.className = "big_button";
+            const lbl = document.createElement("label");
+            lbl.className = "radio big-opt";
+            const inp = document.createElement("input");
+            inp.type = "radio";
+            inp.name = "c1";
+            inp.style.display = "none";
+            lbl.appendChild(inp);
+            lbl.appendChild(document.createTextNode(opt));
+            inp.addEventListener("click", (e) => e.stopPropagation());
+            lbl.addEventListener("click", (e) => {
+              if (e.target === inp) return;
+              inp.checked = true;
+              flashFeedback(fb, `✓ Clicked "${opt}" — watch for SubscribedButtonClick in log`);
+            });
+            wrap.appendChild(lbl);
+            form.appendChild(wrap);
+          });
+
+          body.insertBefore(form, fb);
+          grid.appendChild(card);
+        }
+
+        // ── Card 2: visible radio + label → SubscribedButtonClick (label text only) ──
+        {
+          const { card, body } = makeCard(
+            "InferredEvents", "tag-inferred", "note-inferred",
+            "SubscribedButtonClick — visible radio + label",
+            "Clicking the <input> radio dot directly: no SubscribedButtonClick. Clicking the label text: fires."
+          );
+          const form = document.createElement("form");
+          form.action = "#";
+          form.onsubmit = () => false;
+
+          ["Just exploring", "A specific goal", "Not sure yet"].forEach((opt, i) => {
+            const lbl = document.createElement("label");
+            lbl.className = "option-radio";
+            const inp = document.createElement("input");
+            inp.type = "radio";
+            inp.name = "c2";
+            inp.value = i;
+            lbl.appendChild(inp);
+            lbl.appendChild(document.createTextNode(" " + opt));
+            form.appendChild(lbl);
+          });
+
+          body.insertBefore(form, body.querySelector(".card-feedback") || null);
+          grid.appendChild(card);
+        }
+
+        // ── Card 3: <button type="button"> inside form → SubscribedButtonClick ──
+        {
+          const { card, body } = makeCard(
+            "InferredEvents", "tag-inferred", "note-inferred",
+            "SubscribedButtonClick — <button type=\"button\"> in form",
+            "A plain <button type=button> inside a <form> triggers SubscribedButtonClick via InferredEvents."
+          );
+          const form = document.createElement("form");
+          form.action = "#";
+          form.onsubmit = () => false;
+          const fb = makeFeedback(body);
+
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "next-btn";
+          btn.textContent = "Fire SubscribedButtonClick";
+          btn.addEventListener("click", () => {
+            flashFeedback(fb, "✓ Button clicked — watch for SubscribedButtonClick in log");
+          });
+          form.appendChild(btn);
+          body.insertBefore(form, fb);
+          grid.appendChild(card);
+        }
+
+        // ── Card 4: <select> onChange → NO SubscribedButtonClick ──
+        {
+          const { card, body } = makeCard(
+            "InferredEvents", "tag-inferred", "note-inferred",
+            "No SubscribedButtonClick — <select> onChange",
+            "Selecting from a dropdown does NOT trigger SubscribedButtonClick. onChange is not a button-like interaction."
+          );
+          const form = document.createElement("form");
+          form.action = "#";
+          form.onsubmit = () => false;
+          const fb = makeFeedback(body);
+
+          const sel = document.createElement("select");
+          sel.name = "c4";
+          sel.innerHTML =
+            '<option value="">Select an option…</option>' +
+            ["Northeast", "Southeast", "Midwest", "Southwest", "West Coast", "International"]
+              .map((r, i) => `<option value="${i + 1}">${r}</option>`).join("");
+          sel.addEventListener("change", () => {
+            if (sel.value) flashFeedback(fb, "✓ Changed — no SubscribedButtonClick should appear");
+          });
+          form.appendChild(sel);
+          body.insertBefore(form, fb);
+          grid.appendChild(card);
+        }
+
+        // ── Card 5: Explicit — Lead ──
+        {
+          const { card, body } = makeCard(
+            "Explicit", "tag-explicit", "note-explicit",
+            "fbq('track', 'Lead')",
+            "Calls fbq('track', 'Lead') directly. Always appears in the event log regardless of InferredEvents config."
+          );
+          const fb = makeFeedback(body);
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "next-btn";
+          btn.textContent = "Fire Lead event";
+          btn.addEventListener("click", () => {
+            if (window.fbq) { fbq("track", "Lead"); refreshCookies(); }
+            flashFeedback(fb, "✓ fbq('track', 'Lead') called");
+          });
+          body.appendChild(btn);
+          grid.appendChild(card);
+        }
+
+        // ── Card 6: Explicit — CompleteRegistration ──
+        {
+          const { card, body } = makeCard(
+            "Explicit", "tag-explicit", "note-explicit",
+            "fbq('track', 'CompleteRegistration')",
+            "Calls fbq('track', 'CompleteRegistration', {status: true}) directly."
+          );
+          const fb = makeFeedback(body);
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "next-btn";
+          btn.textContent = "Fire CompleteRegistration";
+          btn.addEventListener("click", () => {
+            if (window.fbq) { fbq("track", "CompleteRegistration", { status: true }); }
+            flashFeedback(fb, "✓ fbq('track', 'CompleteRegistration', {status:true}) called");
+          });
+          body.appendChild(btn);
+          grid.appendChild(card);
+        }
+
+        // ── Card 7: Explicit — Purchase ──
+        {
+          const { card, body } = makeCard(
+            "Explicit", "tag-explicit", "note-explicit",
+            "fbq('track', 'Purchase')",
+            "Calls fbq('track', 'Purchase', {value: 29.99, currency: 'USD'}) directly."
+          );
+          const fb = makeFeedback(body);
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "next-btn";
+          btn.textContent = "Fire Purchase ($29.99)";
+          btn.addEventListener("click", () => {
+            if (window.fbq) { fbq("track", "Purchase", { value: 29.99, currency: "USD" }); }
+            flashFeedback(fb, "✓ fbq('track', 'Purchase', {value:29.99, currency:'USD'}) called");
+          });
+          body.appendChild(btn);
+          grid.appendChild(card);
+        }
+
+        // ── Card 8: AAM — email field ──
+        {
+          const { card, body } = makeCard(
+            "AAM", "tag-aam", "note-aam",
+            "Automatic Advanced Matching — email field",
+            "fbevents.js scans <input type=email> fields and hashes the value automatically. Type an email and click Submit — if AAM is active, the beacon will include ud[em] (visible in the event log)."
+          );
+          const form = document.createElement("form");
+          form.action = "#";
+          form.onsubmit = () => false;
+          const fb = makeFeedback(body);
+
+          const emailInput = document.createElement("input");
+          emailInput.type = "email";
+          emailInput.name = "email";
+          emailInput.placeholder = "you@example.com";
+          emailInput.className = "email-input";
+          emailInput.autocomplete = "email";
+
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "next-btn btn-purple";
+          btn.textContent = "Submit & fire Lead";
+          btn.addEventListener("click", () => {
+            if (window.fbq) { fbq("track", "Lead"); refreshCookies(); }
+            flashFeedback(fb, "✓ Lead fired — check event log for ud[em] if AAM picked up the email");
+          });
+
+          form.appendChild(emailInput);
+          form.appendChild(btn);
+          body.insertBefore(form, fb);
+          grid.appendChild(card);
+        }
+      }
+
+      // ── INIT ─────────────────────────────────────────────────────────────────
+      updateSignals();
+      refreshCookies();
+      buildCards();
+    </script>
+  </body>
 </html>
