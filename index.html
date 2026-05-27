@@ -306,6 +306,37 @@
       .ck-val.na  { color: var(--con-sup); font-style: italic; }
       .ck-note { font-size: 10.5px; color: var(--con-dim); margin-top: 8px; line-height: 1.4; font-style: italic; }
 
+      .sig-info {
+        cursor: help;
+        color: #555;
+        font-size: 10px;
+        position: relative;
+        display: inline-block;
+        margin-left: 3px;
+        vertical-align: middle;
+      }
+      .sig-info::after {
+        content: attr(data-tip);
+        position: absolute;
+        left: 0;
+        top: calc(100% + 5px);
+        transform: none;
+        background: #222;
+        border: 1px solid #3a3a3a;
+        color: #c8c8c8;
+        padding: 6px 9px;
+        border-radius: 5px;
+        font-size: 10.5px;
+        width: 210px;
+        white-space: normal;
+        line-height: 1.45;
+        display: none;
+        z-index: 200;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        pointer-events: none;
+      }
+      .sig-info:hover::after { display: block; }
+
       #log-header {
         padding: 10px 14px 8px;
         border-bottom: 1px solid #2d2d2d;
@@ -446,20 +477,24 @@
         <div class="panel">
           <div class="panel-title">Signals</div>
           <div class="sig-row">
-            <span class="sig-label">Pixel script</span>
+            <span class="sig-label">Pixel script <span class="sig-info" data-tip="Whether local fbevents.js (2021-03-02 archive) loaded successfully. Failure indicates an ad blocker or network error — also prevents InferredEvents and AAM.">ⓘ</span></span>
             <span class="sig-val" id="sig-pixel">pending</span>
           </div>
           <div class="sig-row">
-            <span class="sig-label">Ad blocker</span>
+            <span class="sig-label">Ad blocker <span class="sig-info" data-tip="Inferred from fbevents.js load failure — not directly detectable. A blocked pixel also suppresses InferredEvents and AAM.">ⓘ</span></span>
             <span class="sig-val" id="sig-adblocker">?</span>
           </div>
           <div class="sig-row">
-            <span class="sig-label">3rd-party cookies</span>
+            <span class="sig-label">3rd-party cookies <span class="sig-info" data-tip="Not readable from JS. Facebook's c_user, fr, and datr cookies travel as Cookie: headers on every /tr/ beacon — visible in a network proxy (e.g. Fiddler).">ⓘ</span></span>
             <span class="sig-val" id="sig-3p">?</span>
           </div>
           <div class="sig-row">
-            <span class="sig-label">FB login (<code>fr</code>)</span>
+            <span class="sig-label">FB login (<code>fr</code>) <span class="sig-info" data-tip="fr is set on facebook.com and is cross-origin — unreadable from this page. When present, it links pixel events to the logged-in Facebook account.">ⓘ</span></span>
             <span class="sig-val" id="sig-fr">cross-origin</span>
+          </div>
+          <div class="sig-row">
+            <span class="sig-label">Adv. Matching <span class="sig-info" data-tip="Reactive detection only — activates when a beacon containing a hashed field (udff[em]) is intercepted. Will not show until a form with PII is submitted (Card 8).">ⓘ</span></span>
+            <span class="sig-val" id="sig-aam">—</span>
           </div>
         </div>
 
@@ -559,17 +594,21 @@
           try {
             const qs = new URLSearchParams(url.split("?")[1] || "");
             const ev = qs.get("ev");
-            const em = qs.get("ud[em]");
-            return ev ? { ev, em } : null;
+            const emFf = qs.get("udff[em]");
+            const emUd = qs.get("ud[em]");
+            const em = emFf || emUd;
+            const emKey = emFf ? "udff[em]" : "ud[em]";
+            return ev ? { ev, em, emKey } : null;
           } catch (_) { return null; }
         }
 
         function onBeacon(url) {
           const parsed = parseFbBeacon(url);
           if (!parsed) return;
-          const { ev, em } = parsed;
+          const { ev, em, emKey } = parsed;
           if (_fbqWrapperLog[ev] && Date.now() - _fbqWrapperLog[ev] < 500) return;
-          const extra = em ? `ud[em]=${em.slice(0, 8)}…` : null;
+          if (em) setSig("sig-aam", "Active", "ok");
+          const extra = em ? `${emKey}=${em.slice(0, 8)}…` : null;
           logFbq(extra ? [ev, extra] : [ev], "inferred");
         }
 
