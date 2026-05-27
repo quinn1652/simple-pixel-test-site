@@ -823,7 +823,7 @@
             lbl.addEventListener("click", (e) => {
               if (e.target === inp) return;
               inp.checked = true;
-              flashFeedback(fb, `✓ Clicked "${opt}" — watch for SubscribedButtonClick in log`);
+              if (window.fbq) flashFeedback(fb, `✓ Clicked "${opt}" — watch for SubscribedButtonClick in log`);
             });
             wrap.appendChild(lbl);
             form.appendChild(wrap);
@@ -833,12 +833,12 @@
           grid.appendChild(card);
         }
 
-        // ── Card 2: visible radio + label → SubscribedButtonClick (label text only) ──
+        // ── Card 2: visible radio + label → NO SubscribedButtonClick ──
         {
           const { card, body } = makeCard(
             "InferredEvents", "tag-inferred", "note-inferred",
-            "SubscribedButtonClick — visible radio + label",
-            "Clicking the <input> radio dot directly: no SubscribedButtonClick. Clicking the label text: fires."
+            "No SubscribedButtonClick — visible radio inside label",
+            "Clicking anywhere on this label (text or radio dot) does NOT fire SubscribedButtonClick. Because the input is visible and wrapped inside the label, clicking the label text also triggers an input click — InferredEvents sees an input click, not a button-like element, and does not fire."
           );
           const form = document.createElement("form");
           form.action = "#";
@@ -877,7 +877,7 @@
           btn.className = "next-btn";
           btn.textContent = "Fire SubscribedButtonClick";
           btn.addEventListener("click", () => {
-            flashFeedback(fb, "✓ Button clicked — watch for SubscribedButtonClick in log");
+            if (window.fbq) flashFeedback(fb, "✓ Button clicked — watch for SubscribedButtonClick in log");
           });
           form.appendChild(btn);
           body.insertBefore(form, fb);
@@ -903,7 +903,7 @@
             ["Northeast", "Southeast", "Midwest", "Southwest", "West Coast", "International"]
               .map((r, i) => `<option value="${i + 1}">${r}</option>`).join("");
           sel.addEventListener("change", () => {
-            if (sel.value) flashFeedback(fb, "✓ Changed — no SubscribedButtonClick should appear");
+            if (sel.value && window.fbq) flashFeedback(fb, "✓ Changed — no SubscribedButtonClick should appear");
           });
           form.appendChild(sel);
           body.insertBefore(form, fb);
@@ -923,8 +923,7 @@
           btn.className = "next-btn";
           btn.textContent = "Fire Lead event";
           btn.addEventListener("click", () => {
-            if (window.fbq) { fbq("track", "Lead"); refreshCookies(); }
-            flashFeedback(fb, "✓ fbq('track', 'Lead') called");
+            if (window.fbq) { fbq("track", "Lead"); refreshCookies(); flashFeedback(fb, "✓ fbq('track', 'Lead') called"); }
           });
           body.appendChild(btn);
           grid.appendChild(card);
@@ -943,8 +942,7 @@
           btn.className = "next-btn";
           btn.textContent = "Fire CompleteRegistration";
           btn.addEventListener("click", () => {
-            if (window.fbq) { fbq("track", "CompleteRegistration", { status: true }); }
-            flashFeedback(fb, "✓ fbq('track', 'CompleteRegistration', {status:true}) called");
+            if (window.fbq) { fbq("track", "CompleteRegistration", { status: true }); flashFeedback(fb, "✓ fbq('track', 'CompleteRegistration', {status:true}) called"); }
           });
           body.appendChild(btn);
           grid.appendChild(card);
@@ -963,8 +961,7 @@
           btn.className = "next-btn";
           btn.textContent = "Fire Purchase ($29.99)";
           btn.addEventListener("click", () => {
-            if (window.fbq) { fbq("track", "Purchase", { value: 29.99, currency: "USD" }); }
-            flashFeedback(fb, "✓ fbq('track', 'Purchase', {value:29.99, currency:'USD'}) called");
+            if (window.fbq) { fbq("track", "Purchase", { value: 29.99, currency: "USD" }); flashFeedback(fb, "✓ fbq('track', 'Purchase', {value:29.99, currency:'USD'}) called"); }
           });
           body.appendChild(btn);
           grid.appendChild(card);
@@ -975,7 +972,7 @@
           const { card, body } = makeCard(
             "AAM", "tag-aam", "note-aam",
             "Automatic Advanced Matching — email field",
-            "fbevents.js scans <input type=email> fields and hashes the value automatically. Type an email and click Submit — if AAM is active, the beacon will include ud[em] (visible in the event log)."
+            "fbevents.js scans &lt;input type=email&gt; fields and hashes the value automatically. Type an email and click Submit — if AAM is active, the beacon will include ud[em] (visible in the event log). Once fbevents.js picks up the email it stores the hash internally for the page session — all subsequent beacons will include ud[em] even if the field is cleared. Reload the page to reset."
           );
           const form = document.createElement("form");
           form.action = "#";
@@ -994,8 +991,7 @@
           btn.className = "next-btn btn-purple";
           btn.textContent = "Submit & fire Lead";
           btn.addEventListener("click", () => {
-            if (window.fbq) { fbq("track", "Lead"); refreshCookies(); }
-            flashFeedback(fb, "✓ Lead fired — check event log for ud[em] if AAM picked up the email");
+            if (window.fbq) { fbq("track", "Lead"); refreshCookies(); flashFeedback(fb, "✓ Lead fired — check event log for ud[em] if AAM picked up the email"); }
           });
 
           form.appendChild(emailInput);
