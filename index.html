@@ -477,21 +477,11 @@
         <div class="panel">
           <div class="panel-title">Signals</div>
           <div class="sig-row">
-            <span class="sig-label">Pixel script <span class="sig-info" data-tip="Whether local fbevents.js (2021-03-02 archive) loaded successfully. Failure indicates an ad blocker or network error — also prevents InferredEvents and AAM.">ⓘ</span></span>
+            <span class="sig-label">Pixel script <span class="sig-info" data-tip="Whether local fbevents.js (2021-03-02 archive) loaded successfully. Failure indicates a network error or blocking — also prevents InferredEvents and AAM.">ⓘ</span></span>
             <span class="sig-val" id="sig-pixel">pending</span>
           </div>
-          <div class="sig-row">
-            <span class="sig-label">Ad blocker <span class="sig-info" data-tip="Inferred from fbevents.js load failure — not directly detectable. A blocked pixel also suppresses InferredEvents and AAM.">ⓘ</span></span>
-            <span class="sig-val" id="sig-adblocker">?</span>
-          </div>
-          <div class="sig-row">
-            <span class="sig-label">3rd-party cookies <span class="sig-info" data-tip="Not readable from JS. Facebook's c_user, fr, and datr cookies travel as Cookie: headers on every /tr/ beacon — visible in a network proxy (e.g. Fiddler).">ⓘ</span></span>
-            <span class="sig-val" id="sig-3p">?</span>
-          </div>
-          <div class="sig-row">
-            <span class="sig-label">FB login (<code>fr</code>) <span class="sig-info" data-tip="fr is set on facebook.com and is cross-origin — unreadable from this page. When present, it links pixel events to the logged-in Facebook account.">ⓘ</span></span>
-            <span class="sig-val" id="sig-fr">cross-origin</span>
-          </div>
+
+
           <div class="sig-row">
             <span class="sig-label">Adv. Matching <span class="sig-info" data-tip="Reactive detection only — activates when a beacon containing a hashed field (udff[em]) is intercepted. Will not show until a form with PII is submitted (Card 8).">ⓘ</span></span>
             <span class="sig-val" id="sig-aam">—</span>
@@ -678,22 +668,13 @@
       function updateSignals() {
         if (pixelLoaded === true) {
           setSig("sig-pixel", "Loaded", "ok");
-          setSig("sig-adblocker", "Not detected", "ok");
-          setSig("sig-3p", "See note →", "");
         } else if (pixelLoaded === false && consentState === "declined") {
           setSig("sig-pixel", "Suppressed", "warn");
-          setSig("sig-adblocker", "?", "");
-          setSig("sig-3p", "?", "");
         } else if (pixelLoaded === false) {
           setSig("sig-pixel", "Blocked", "bad");
-          setSig("sig-adblocker", "Detected", "warn");
-          setSig("sig-3p", "?", "");
         } else {
           setSig("sig-pixel", "Pending", "");
-          setSig("sig-adblocker", "?", "");
-          setSig("sig-3p", "?", "");
         }
-        setSig("sig-fr", "cross-origin", "warn");
       }
 
       // ── PIXEL STUB + CONSENT GATE ────────────────────────────────────────────
