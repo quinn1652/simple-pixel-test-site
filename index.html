@@ -489,6 +489,13 @@
         </div>
 
         <div class="panel">
+          <div class="panel-title">Browser</div>
+          <div class="ck-row">
+            <span class="ck-val set" id="ua-val" style="max-width:100%">—</span>
+          </div>
+        </div>
+
+        <div class="panel">
           <div class="panel-title">Browser Cookies</div>
           <div class="ck-row">
             <span class="ck-name">_fbp</span>
@@ -1002,6 +1009,19 @@
       }
 
       // ── INIT ─────────────────────────────────────────────────────────────────
+      function parseBrowser(ua) {
+        let m;
+        if ((m = ua.match(/Firefox\/([\d.]+)/)))    return "Firefox " + m[1];
+        if (/Chrome\//.test(ua) && !/Edg\//.test(ua) && (m = ua.match(/Chrome\/([\d.]+)/)))
+                                                 return "Chrome " + m[1];
+        if ((m = ua.match(/Version\/([\d.]+).*Safari/))) return "Safari " + m[1];
+        return ua;
+      }
+
+      const uaEl = document.getElementById("ua-val");
+      uaEl.textContent = parseBrowser(navigator.userAgent);
+      uaEl.title = navigator.userAgent;
+
       updateSignals();
       refreshCookies();
       buildCards();
