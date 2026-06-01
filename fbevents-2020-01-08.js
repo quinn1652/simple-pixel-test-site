@@ -295,8 +295,8 @@ if (!globalThis.__WB_pmw) {
             "use strict";
             var a = /^https:\/\/www\.([A-Za-z0-9\.]+)\.facebook\.com\/tr\/?$/,
               b = [
-                "https://www.facebook.com/tr",
-                "https://www.facebook.com/tr/",
+                "https://web.archive.org/web/20200108234920/https://www.facebook.com/tr",
+                "https://web.archive.org/web/20200108234920/https://www.facebook.com/tr/",
               ];
             j.exports = function (c) {
               if (b.indexOf(c) !== -1) return null;
@@ -346,7 +346,7 @@ if (!globalThis.__WB_pmw) {
             "use strict";
             var a = {
               CDN_BASE_URL:
-                "https://connect.facebook.net/",
+                "https://web.archive.org/web/20200108234920/https://connect.facebook.net/",
             };
             function b() {
               var b = g.getElementsByTagName("script");
@@ -481,7 +481,7 @@ if (!globalThis.__WB_pmw) {
                   return (
                     "You are sending a non-standard event '" +
                     e +
-                    "'. The preferred way to send these events is using trackCustom. See 'https://developers.facebook.com/docs/ads-for-websites/pixel-events/#events' for more information."
+                    "'. The preferred way to send these events is using trackCustom. See 'https://web.archive.org/web/20200108234920/https://developers.facebook.com/docs/ads-for-websites/pixel-events/#events' for more information."
                   );
                 case "NEGATIVE_EVENT_PARAM":
                   b = a.param;
@@ -621,7 +621,7 @@ if (!globalThis.__WB_pmw) {
             "use strict";
             var a = {
               ENDPOINT:
-                "https://www.facebook.com/tr/",
+                "https://web.archive.org/web/20200108234920/https://www.facebook.com/tr/",
             };
             j.exports = a;
           })();
@@ -2202,7 +2202,7 @@ if (!globalThis.__WB_pmw) {
             "use strict";
             var a = {
               CDN_BASE_URL:
-                "https://connect.facebook.net/",
+                "https://web.archive.org/web/20200108234920/https://connect.facebook.net/",
             };
             function b() {
               var b = g.getElementsByTagName("script");
@@ -2337,7 +2337,7 @@ if (!globalThis.__WB_pmw) {
                   return (
                     "You are sending a non-standard event '" +
                     e +
-                    "'. The preferred way to send these events is using trackCustom. See 'https://developers.facebook.com/docs/ads-for-websites/pixel-events/#events' for more information."
+                    "'. The preferred way to send these events is using trackCustom. See 'https://web.archive.org/web/20200108234920/https://developers.facebook.com/docs/ads-for-websites/pixel-events/#events' for more information."
                   );
                 case "NEGATIVE_EVENT_PARAM":
                   b = a.param;
@@ -2477,7 +2477,7 @@ if (!globalThis.__WB_pmw) {
             "use strict";
             var a = {
               ENDPOINT:
-                "https://www.facebook.com/tr/",
+                "https://web.archive.org/web/20200108234920/https://www.facebook.com/tr/",
             };
             j.exports = a;
           })();
@@ -4807,7 +4807,15 @@ if (!globalThis.__WB_pmw) {
               return !!(w[a] || y[a]);
             }
             function B(a, b, c) {
-              j.loadJSFile("./signals-config.js");
+              j.loadJSFile(
+                j.CONFIG.CDN_BASE_URL +
+                  "signals/config/" +
+                  a +
+                  "?v=" +
+                  b +
+                  "&r=" +
+                  c,
+              );
             }
             d = (function () {
               function d(a, b) {
@@ -5376,7 +5384,7 @@ if (!globalThis.__WB_pmw) {
             "use strict";
             var a = {
               CDN_BASE_URL:
-                "https://connect.facebook.net/",
+                "https://web.archive.org/web/20200108234920/https://connect.facebook.net/",
             };
             function b() {
               var b = g.getElementsByTagName("script");
@@ -5565,7 +5573,7 @@ if (!globalThis.__WB_pmw) {
                   return (
                     "You are sending a non-standard event '" +
                     e +
-                    "'. The preferred way to send these events is using trackCustom. See 'https://developers.facebook.com/docs/ads-for-websites/pixel-events/#events' for more information."
+                    "'. The preferred way to send these events is using trackCustom. See 'https://web.archive.org/web/20200108234920/https://developers.facebook.com/docs/ads-for-websites/pixel-events/#events' for more information."
                   );
                 case "NEGATIVE_EVENT_PARAM":
                   b = a.param;
@@ -5863,7 +5871,7 @@ if (!globalThis.__WB_pmw) {
             "use strict";
             var a = {
               ENDPOINT:
-                "https://www.facebook.com/tr/",
+                "https://web.archive.org/web/20200108234920/https://www.facebook.com/tr/",
             };
             j.exports = a;
           })();
@@ -6686,7 +6694,7 @@ if (!globalThis.__WB_pmw) {
                   : "unknown",
               i = e < d || h === "canary",
               j =
-                "https://connect.facebook.net/log/fbevents_telemetry/";
+                "https://web.archive.org/web/20200108234920/https://connect.facebook.net/log/fbevents_telemetry/";
             function l(d) {
               var e =
                   arguments.length > 1 && arguments[1] !== void 0
