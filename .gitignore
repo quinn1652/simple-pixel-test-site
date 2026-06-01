@@ -1,3 +1,7 @@
 tmp/*
 .env
 .env.local
+chrome-versions
+firefox-versions
+chrome-versions/*
+firefox-versions/*
