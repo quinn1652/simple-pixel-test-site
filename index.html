@@ -844,35 +844,29 @@
         if (navigator.sendBeacon) {
           const origBeacon = navigator.sendBeacon.bind(navigator);
           navigator.sendBeacon = function (url, data) {
-            onBeacon(typeof url === "string" ? url : String(url));
+            const urlStr = typeof url === "string" ? url : String(url);
+            if (data instanceof FormData && urlStr.includes("facebook.com/tr")) {
+              const ev = data.get("ev");
+              if (ev) {
+                const params = new URLSearchParams();
+                params.set("ev", ev);
+                const emFf = data.get("udff[em]");
+                const emUd = data.get("ud[em]");
+                if (emFf) params.set("udff[em]", emFf);
+                else if (emUd) params.set("ud[em]", emUd);
+                onBeacon("https://www.facebook.com/tr/?" + params.toString());
+                return origBeacon(url, data);
+              }
+            }
+            onBeacon(urlStr);
             return origBeacon(url, data);
           };
         }
 
         const origOpen = XMLHttpRequest.prototype.open;
         XMLHttpRequest.prototype.open = function (method, url) {
-          const urlStr = typeof url === "string" ? url : String(url);
-          if (urlStr.includes("facebook.com/tr")) this._fbTr = { method, url: urlStr };
-          onBeacon(urlStr);
+          onBeacon(typeof url === "string" ? url : String(url));
           return origOpen.apply(this, arguments);
-        };
-
-        const origSend = XMLHttpRequest.prototype.send;
-        XMLHttpRequest.prototype.send = function (body) {
-          const meta = this._fbTr;
-          if (meta && meta.method.toUpperCase() === "POST" && body instanceof FormData) {
-            const ev = body.get("ev");
-            if (ev) {
-              const params = new URLSearchParams();
-              params.set("ev", ev);
-              const emFf = body.get("udff[em]");
-              const emUd = body.get("ud[em]");
-              if (emFf) params.set("udff[em]", emFf);
-              else if (emUd) params.set("ud[em]", emUd);
-              onBeacon("https://www.facebook.com/tr/?" + params.toString());
-            }
-          }
-          return origSend.apply(this, arguments);
         };
       })();
 
