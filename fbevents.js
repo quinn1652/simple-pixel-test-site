@@ -345,8 +345,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              CDN_BASE_URL:
-                "https://connect.facebook.net/",
+              CDN_BASE_URL: "https://connect.facebook.net/",
             };
             function b() {
               var b = g.getElementsByTagName("script");
@@ -620,8 +619,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              ENDPOINT:
-                "https://www.facebook.com/tr/",
+              ENDPOINT: "https://www.facebook.com/tr/",
             };
             j.exports = a;
           })();
@@ -2201,8 +2199,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              CDN_BASE_URL:
-                "https://connect.facebook.net/",
+              CDN_BASE_URL: "https://connect.facebook.net/",
             };
             function b() {
               var b = g.getElementsByTagName("script");
@@ -2476,8 +2473,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              ENDPOINT:
-                "https://www.facebook.com/tr/",
+              ENDPOINT: "https://www.facebook.com/tr/",
             };
             j.exports = a;
           })();
@@ -5383,8 +5379,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              CDN_BASE_URL:
-                "https://connect.facebook.net/",
+              CDN_BASE_URL: "https://connect.facebook.net/",
             };
             function b() {
               var b = g.getElementsByTagName("script");
@@ -5870,8 +5865,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              ENDPOINT:
-                "https://www.facebook.com/tr/",
+              ENDPOINT: "https://www.facebook.com/tr/",
             };
             j.exports = a;
           })();
@@ -6693,8 +6687,7 @@ if (!globalThis.__WB_pmw) {
                   ? g.fbq._releaseSegment
                   : "unknown",
               i = e < d || h === "canary",
-              j =
-                "https://connect.facebook.net/log/fbevents_telemetry/";
+              j = "https://connect.facebook.net/log/fbevents_telemetry/";
             function l(d) {
               var e =
                   arguments.length > 1 && arguments[1] !== void 0

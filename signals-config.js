@@ -1737,8 +1737,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              CDN_BASE_URL:
-                "https://connect.facebook.net/",
+              CDN_BASE_URL: "https://connect.facebook.net/",
             };
             function b() {
               var b = g.getElementsByTagName("script");
@@ -2209,8 +2208,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              ENDPOINT:
-                "https://www.facebook.com/tr/",
+              ENDPOINT: "https://www.facebook.com/tr/",
             };
             j.exports = a;
           })();
@@ -3292,8 +3290,7 @@ if (!globalThis.__WB_pmw) {
                     var t = b.pop();
                     if (!k()(c, t)) {
                       var u = {
-                        "@context":
-                          "http://schema.org",
+                        "@context": "http://schema.org",
                       };
                       s.push({ htmlElement: t, jsonLD: u });
                       for (
@@ -4425,10 +4422,7 @@ if (!globalThis.__WB_pmw) {
                     for (
                       var b = o()(h.a, function (a) {
                           return '[vocab$="'
-                            .concat(
-                              "http://schema.org/",
-                              '"][typeof$="',
-                            )
+                            .concat("http://schema.org/", '"][typeof$="')
                             .concat(a, '"]');
                         }).join(", "),
                         c = [],
@@ -4439,8 +4433,7 @@ if (!globalThis.__WB_pmw) {
                       var q = b.pop();
                       if (!n()(c, q)) {
                         var u = {
-                          "@context":
-                            "http://schema.org",
+                          "@context": "http://schema.org",
                         };
                         d.push({ htmlElement: q, jsonLD: u });
                         for (
@@ -4877,8 +4870,7 @@ if (!globalThis.__WB_pmw) {
                     return "product.item" !== a["og:type"]
                       ? null
                       : {
-                          "@context":
-                            "http://schema.org",
+                          "@context": "http://schema.org",
                           "@type": "Product",
                           offers: {
                             price: a["product:price:amount"],
@@ -4980,8 +4972,7 @@ if (!globalThis.__WB_pmw) {
                     {},
                   ),
                   Q = {
-                    "@context":
-                      "http://schema.org",
+                    "@context": "http://schema.org",
                     "@type": "Product",
                     additionalType: void 0,
                     offers: { price: void 0, priceCurrency: void 0 },
@@ -4991,8 +4982,7 @@ if (!globalThis.__WB_pmw) {
                     if (null == c) return a;
                     var d = k()(a.offers);
                     return {
-                      "@context":
-                        "http://schema.org",
+                      "@context": "http://schema.org",
                       "@type": "Product",
                       additionalType:
                         null != a.additionalType
@@ -5077,8 +5067,7 @@ if (!globalThis.__WB_pmw) {
                               c &&
                                 (d = [
                                   {
-                                    "@context":
-                                      "http://schema.org",
+                                    "@context": "http://schema.org",
                                     "@type": "ItemList",
                                     itemListElement: o()(d, function (a, b) {
                                       return {
@@ -6999,8 +6988,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              CDN_BASE_URL:
-                "https://connect.facebook.net/",
+              CDN_BASE_URL: "https://connect.facebook.net/",
             };
             function b() {
               var b = g.getElementsByTagName("script");
@@ -7274,8 +7262,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              ENDPOINT:
-                "https://www.facebook.com/tr/",
+              ENDPOINT: "https://www.facebook.com/tr/",
             };
             j.exports = a;
           })();
@@ -8224,8 +8211,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              CDN_BASE_URL:
-                "https://connect.facebook.net/",
+              CDN_BASE_URL: "https://connect.facebook.net/",
             };
             function b() {
               var b = g.getElementsByTagName("script");
@@ -8499,8 +8485,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              ENDPOINT:
-                "https://www.facebook.com/tr/",
+              ENDPOINT: "https://www.facebook.com/tr/",
             };
             j.exports = a;
           })();
@@ -10080,8 +10065,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              CDN_BASE_URL:
-                "https://connect.facebook.net/",
+              CDN_BASE_URL: "https://connect.facebook.net/",
             };
             function b() {
               var b = g.getElementsByTagName("script");
@@ -10355,8 +10339,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              ENDPOINT:
-                "https://www.facebook.com/tr/",
+              ENDPOINT: "https://www.facebook.com/tr/",
             };
             j.exports = a;
           })();
@@ -11217,8 +11200,7 @@ if (!globalThis.__WB_pmw) {
                     var t = b.pop();
                     if (!k()(c, t)) {
                       var u = {
-                        "@context":
-                          "http://schema.org",
+                        "@context": "http://schema.org",
                       };
                       s.push({ htmlElement: t, jsonLD: u });
                       for (
@@ -12350,10 +12332,7 @@ if (!globalThis.__WB_pmw) {
                     for (
                       var b = o()(g.a, function (a) {
                           return '[vocab$="'
-                            .concat(
-                              "http://schema.org/",
-                              '"][typeof$="',
-                            )
+                            .concat("http://schema.org/", '"][typeof$="')
                             .concat(a, '"]');
                         }).join(", "),
                         c = [],
@@ -12364,8 +12343,7 @@ if (!globalThis.__WB_pmw) {
                       var q = b.pop();
                       if (!n()(c, q)) {
                         var u = {
-                          "@context":
-                            "http://schema.org",
+                          "@context": "http://schema.org",
                         };
                         d.push({ htmlElement: q, jsonLD: u });
                         for (
@@ -12802,8 +12780,7 @@ if (!globalThis.__WB_pmw) {
                     return "product.item" !== a["og:type"]
                       ? null
                       : {
-                          "@context":
-                            "http://schema.org",
+                          "@context": "http://schema.org",
                           "@type": "Product",
                           offers: {
                             price: a["product:price:amount"],
@@ -12905,8 +12882,7 @@ if (!globalThis.__WB_pmw) {
                     {},
                   ),
                   Q = {
-                    "@context":
-                      "http://schema.org",
+                    "@context": "http://schema.org",
                     "@type": "Product",
                     additionalType: void 0,
                     offers: { price: void 0, priceCurrency: void 0 },
@@ -12916,8 +12892,7 @@ if (!globalThis.__WB_pmw) {
                     if (null == c) return a;
                     var d = k()(a.offers);
                     return {
-                      "@context":
-                        "http://schema.org",
+                      "@context": "http://schema.org",
                       "@type": "Product",
                       additionalType:
                         null != a.additionalType
@@ -13002,8 +12977,7 @@ if (!globalThis.__WB_pmw) {
                               c &&
                                 (d = [
                                   {
-                                    "@context":
-                                      "http://schema.org",
+                                    "@context": "http://schema.org",
                                     "@type": "ItemList",
                                     itemListElement: o()(d, function (a, b) {
                                       return {
@@ -14822,8 +14796,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              CDN_BASE_URL:
-                "https://connect.facebook.net/",
+              CDN_BASE_URL: "https://connect.facebook.net/",
             };
             function b() {
               var b = g.getElementsByTagName("script");
@@ -15097,8 +15070,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              ENDPOINT:
-                "https://www.facebook.com/tr/",
+              ENDPOINT: "https://www.facebook.com/tr/",
             };
             j.exports = a;
           })();
@@ -16994,8 +16966,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              CDN_BASE_URL:
-                "https://connect.facebook.net/",
+              CDN_BASE_URL: "https://connect.facebook.net/",
             };
             function b() {
               var b = g.getElementsByTagName("script");
@@ -17323,8 +17294,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              ENDPOINT:
-                "https://www.facebook.com/tr/",
+              ENDPOINT: "https://www.facebook.com/tr/",
             };
             j.exports = a;
           })();
@@ -18299,8 +18269,7 @@ if (!globalThis.__WB_pmw) {
                     var t = b.pop();
                     if (!k()(c, t)) {
                       var u = {
-                        "@context":
-                          "http://schema.org",
+                        "@context": "http://schema.org",
                       };
                       s.push({ htmlElement: t, jsonLD: u });
                       for (
@@ -19432,10 +19401,7 @@ if (!globalThis.__WB_pmw) {
                     for (
                       var b = o()(h.a, function (a) {
                           return '[vocab$="'
-                            .concat(
-                              "http://schema.org/",
-                              '"][typeof$="',
-                            )
+                            .concat("http://schema.org/", '"][typeof$="')
                             .concat(a, '"]');
                         }).join(", "),
                         c = [],
@@ -19446,8 +19412,7 @@ if (!globalThis.__WB_pmw) {
                       var q = b.pop();
                       if (!n()(c, q)) {
                         var u = {
-                          "@context":
-                            "http://schema.org",
+                          "@context": "http://schema.org",
                         };
                         d.push({ htmlElement: q, jsonLD: u });
                         for (
@@ -19884,8 +19849,7 @@ if (!globalThis.__WB_pmw) {
                     return "product.item" !== a["og:type"]
                       ? null
                       : {
-                          "@context":
-                            "http://schema.org",
+                          "@context": "http://schema.org",
                           "@type": "Product",
                           offers: {
                             price: a["product:price:amount"],
@@ -19987,8 +19951,7 @@ if (!globalThis.__WB_pmw) {
                     {},
                   ),
                   Q = {
-                    "@context":
-                      "http://schema.org",
+                    "@context": "http://schema.org",
                     "@type": "Product",
                     additionalType: void 0,
                     offers: { price: void 0, priceCurrency: void 0 },
@@ -19998,8 +19961,7 @@ if (!globalThis.__WB_pmw) {
                     if (null == c) return a;
                     var d = k()(a.offers);
                     return {
-                      "@context":
-                        "http://schema.org",
+                      "@context": "http://schema.org",
                       "@type": "Product",
                       additionalType:
                         null != a.additionalType
@@ -20084,8 +20046,7 @@ if (!globalThis.__WB_pmw) {
                               c &&
                                 (d = [
                                   {
-                                    "@context":
-                                      "http://schema.org",
+                                    "@context": "http://schema.org",
                                     "@type": "ItemList",
                                     itemListElement: o()(d, function (a, b) {
                                       return {
@@ -21116,12 +21077,8 @@ if (!globalThis.__WB_pmw) {
                 return (
                   l(v, function (c) {
                     return (
-                      (a ===
-                        "https://schema.org/" +
-                          c.type ||
-                        a ===
-                          "http://schema.org/" +
-                            c.type) &&
+                      (a === "https://schema.org/" + c.type ||
+                        a === "http://schema.org/" + c.type) &&
                       c.property === b
                     );
                   })[0] != null
@@ -22655,8 +22612,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              CDN_BASE_URL:
-                "https://connect.facebook.net/",
+              CDN_BASE_URL: "https://connect.facebook.net/",
             };
             function b() {
               var b = g.getElementsByTagName("script");
@@ -23010,8 +22966,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              ENDPOINT:
-                "https://www.facebook.com/tr/",
+              ENDPOINT: "https://www.facebook.com/tr/",
             };
             j.exports = a;
           })();
@@ -24093,8 +24048,7 @@ if (!globalThis.__WB_pmw) {
                     var t = b.pop();
                     if (!k()(c, t)) {
                       var u = {
-                        "@context":
-                          "http://schema.org",
+                        "@context": "http://schema.org",
                       };
                       s.push({ htmlElement: t, jsonLD: u });
                       for (
@@ -25226,10 +25180,7 @@ if (!globalThis.__WB_pmw) {
                     for (
                       var b = o()(h.a, function (a) {
                           return '[vocab$="'
-                            .concat(
-                              "http://schema.org/",
-                              '"][typeof$="',
-                            )
+                            .concat("http://schema.org/", '"][typeof$="')
                             .concat(a, '"]');
                         }).join(", "),
                         c = [],
@@ -25240,8 +25191,7 @@ if (!globalThis.__WB_pmw) {
                       var q = b.pop();
                       if (!n()(c, q)) {
                         var u = {
-                          "@context":
-                            "http://schema.org",
+                          "@context": "http://schema.org",
                         };
                         d.push({ htmlElement: q, jsonLD: u });
                         for (
@@ -25678,8 +25628,7 @@ if (!globalThis.__WB_pmw) {
                     return "product.item" !== a["og:type"]
                       ? null
                       : {
-                          "@context":
-                            "http://schema.org",
+                          "@context": "http://schema.org",
                           "@type": "Product",
                           offers: {
                             price: a["product:price:amount"],
@@ -25781,8 +25730,7 @@ if (!globalThis.__WB_pmw) {
                     {},
                   ),
                   Q = {
-                    "@context":
-                      "http://schema.org",
+                    "@context": "http://schema.org",
                     "@type": "Product",
                     additionalType: void 0,
                     offers: { price: void 0, priceCurrency: void 0 },
@@ -25792,8 +25740,7 @@ if (!globalThis.__WB_pmw) {
                     if (null == c) return a;
                     var d = k()(a.offers);
                     return {
-                      "@context":
-                        "http://schema.org",
+                      "@context": "http://schema.org",
                       "@type": "Product",
                       additionalType:
                         null != a.additionalType
@@ -25878,8 +25825,7 @@ if (!globalThis.__WB_pmw) {
                               c &&
                                 (d = [
                                   {
-                                    "@context":
-                                      "http://schema.org",
+                                    "@context": "http://schema.org",
                                     "@type": "ItemList",
                                     itemListElement: o()(d, function (a, b) {
                                       return {
@@ -28759,8 +28705,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              CDN_BASE_URL:
-                "https://connect.facebook.net/",
+              CDN_BASE_URL: "https://connect.facebook.net/",
             };
             function b() {
               var b = g.getElementsByTagName("script");
@@ -29114,8 +29059,7 @@ if (!globalThis.__WB_pmw) {
           (function () {
             "use strict";
             var a = {
-              ENDPOINT:
-                "https://www.facebook.com/tr/",
+              ENDPOINT: "https://www.facebook.com/tr/",
             };
             j.exports = a;
           })();
