@@ -657,7 +657,7 @@
               >Pixel script
               <span
                 class="sig-info"
-                data-tip="Whether local fbevents.js (2021-03-02 archive) loaded successfully. Failure indicates a network error or blocking — also prevents InferredEvents and AAM."
+                data-tip="Whether fbevents.js loaded from connect.facebook.net. Ad blockers target this URL — blocking it prevents InferredEvents and AAM."
                 >ⓘ</span
               ></span
             >
@@ -704,7 +704,7 @@
         </div>
 
         <div id="log-header">
-          <div class="panel-title">Event Log</div>
+          <div class="panel-title">Event Log -- ATTEMPTED FBQ() CALLS</div>
           <button id="log-clear">clear</button>
         </div>
         <div id="event-log">
@@ -714,6 +714,11 @@
     </div>
 
     <script>
+      // ── SERVICE WORKER ───────────────────────────────────────────────────────
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/sw.js");
+      }
+
       // ── CONFIGURATION ────────────────────────────────────────────────────────
       const PIXEL_ID = "1308318914571848";
 
@@ -928,7 +933,7 @@
         return new Promise((resolve, reject) => {
           const s = document.createElement("script");
           s.async = true;
-          s.src = "./fbevents.js";
+          s.src = "https://connect.facebook.net/en_US/fbevents.js";
           s.onload = () => {
             pixelLoaded = true;
             resolve();

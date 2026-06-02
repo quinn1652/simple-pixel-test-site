@@ -4807,7 +4807,15 @@ if (!globalThis.__WB_pmw) {
               return !!(w[a] || y[a]);
             }
             function B(a, b, c) {
-              j.loadJSFile("./signals-config.js");
+              j.loadJSFile(
+                j.CONFIG.CDN_BASE_URL +
+                  "signals/config/" +
+                  a +
+                  "?v=" +
+                  b +
+                  "&r=" +
+                  c,
+              );
             }
             d = (function () {
               function d(a, b) {
