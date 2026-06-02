@@ -840,7 +840,10 @@
           const origBeacon = navigator.sendBeacon.bind(navigator);
           navigator.sendBeacon = function (url, data) {
             const urlStr = typeof url === "string" ? url : String(url);
-            if (data instanceof FormData && urlStr.includes("facebook.com/tr")) {
+            if (
+              data instanceof FormData &&
+              urlStr.includes("facebook.com/tr")
+            ) {
               const ev = data.get("ev");
               if (ev) {
                 const params = new URLSearchParams();
