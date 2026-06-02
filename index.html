@@ -30,14 +30,17 @@
         --header-h: 48px;
       }
 
-      *, *::before, *::after {
+      *,
+      *::before,
+      *::after {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
       }
 
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         background: var(--bg);
         color: var(--text);
         font-size: 15px;
@@ -66,27 +69,36 @@
         top: 0;
         z-index: 50;
       }
-      header .sep { opacity: .4; font-weight: 300; }
+      header .sep {
+        opacity: 0.4;
+        font-weight: 300;
+      }
       header .sub {
         font-size: 12px;
         font-weight: 400;
-        opacity: .85;
+        opacity: 0.85;
         font-family: "Courier New", monospace;
       }
-      header .spacer { flex: 1; }
+      header .spacer {
+        flex: 1;
+      }
 
       .status-chip {
         font-size: 11px;
         font-weight: 700;
         padding: 3px 10px;
         border-radius: 20px;
-        background: rgba(255,255,255,.2);
+        background: rgba(255, 255, 255, 0.2);
         color: #fff;
-        letter-spacing: .04em;
+        letter-spacing: 0.04em;
         text-transform: uppercase;
       }
-      .status-chip.accepted { background: var(--green); }
-      .status-chip.declined { background: var(--red); }
+      .status-chip.accepted {
+        background: var(--green);
+      }
+      .status-chip.declined {
+        background: var(--red);
+      }
 
       /* ── Main content area ──────────────────────────────────────────────── */
       main {
@@ -109,7 +121,9 @@
       .test-card {
         background: var(--surface);
         border-radius: 10px;
-        box-shadow: 0 1px 4px rgba(0,0,0,.10), 0 4px 12px rgba(0,0,0,.05);
+        box-shadow:
+          0 1px 4px rgba(0, 0, 0, 0.1),
+          0 4px 12px rgba(0, 0, 0, 0.05);
         overflow: hidden;
       }
 
@@ -124,14 +138,23 @@
         font-size: 10px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: .07em;
+        letter-spacing: 0.07em;
         padding: 3px 8px;
         border-radius: 4px;
         flex-shrink: 0;
       }
-      .tag-inferred { background: #fff3cd; color: #856404; }
-      .tag-explicit  { background: #dbeafe; color: #1d4ed8; }
-      .tag-aam       { background: #ede9fe; color: #6d28d9; }
+      .tag-inferred {
+        background: #fff3cd;
+        color: #856404;
+      }
+      .tag-direct {
+        background: #dbeafe;
+        color: #1d4ed8;
+      }
+      .tag-aam {
+        background: #ede9fe;
+        color: #6d28d9;
+      }
 
       .card-title {
         font-size: 15px;
@@ -155,9 +178,15 @@
         margin-bottom: 16px;
         line-height: 1.4;
       }
-      .card-note.note-inferred { border-left-color: #d97706; }
-      .card-note.note-explicit  { border-left-color: var(--blue); }
-      .card-note.note-aam       { border-left-color: #7c3aed; }
+      .card-note.note-inferred {
+        border-left-color: #d97706;
+      }
+      .card-note.note-direct {
+        border-left-color: var(--blue);
+      }
+      .card-note.note-aam {
+        border-left-color: #7c3aed;
+      }
 
       .card-feedback {
         font-size: 12px;
@@ -167,30 +196,11 @@
         min-height: 18px;
       }
 
-      /* ── Radio options ───────────────────────────────────────────────────── */
-      .option-radio {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 11px 14px;
-        border: 2px solid var(--border);
-        border-radius: 8px;
-        margin-bottom: 8px;
-        cursor: pointer;
-        transition: border-color .12s, background .12s;
-        font-size: 15px;
-        user-select: none;
-      }
-      .option-radio:hover { border-color: var(--blue); background: #edf3ff; }
-      .option-radio input[type="radio"] {
-        width: 17px;
-        height: 17px;
-        accent-color: var(--blue);
-        flex-shrink: 0;
-      }
 
       /* ── Big-button options ─────────────────────────────────────────────── */
-      .big_button { margin-bottom: 10px; }
+      .big_button {
+        margin-bottom: 10px;
+      }
       .big-opt {
         display: block;
         width: 100%;
@@ -202,16 +212,22 @@
         font-weight: 500;
         text-align: center;
         cursor: pointer;
-        transition: border-color .12s, background .12s, transform .1s, box-shadow .12s;
+        transition:
+          border-color 0.12s,
+          background 0.12s,
+          transform 0.1s,
+          box-shadow 0.12s;
         user-select: none;
       }
       .big-opt:hover {
         border-color: var(--blue);
         background: #edf3ff;
         transform: translateY(-1px);
-        box-shadow: 0 3px 10px rgba(24,119,242,.15);
+        box-shadow: 0 3px 10px rgba(24, 119, 242, 0.15);
       }
-      .big-opt:active { transform: translateY(0); }
+      .big-opt:active {
+        transform: translateY(0);
+      }
 
       /* ── Select ─────────────────────────────────────────────────────────── */
       select {
@@ -226,7 +242,10 @@
         margin-bottom: 4px;
         appearance: auto;
       }
-      select:focus { outline: 2px solid var(--blue); border-color: transparent; }
+      select:focus {
+        outline: 2px solid var(--blue);
+        border-color: transparent;
+      }
 
       /* ── Email input ────────────────────────────────────────────────────── */
       .email-input {
@@ -240,7 +259,10 @@
         background: #fff;
         margin-bottom: 12px;
       }
-      .email-input:focus { outline: 2px solid #7c3aed; border-color: transparent; }
+      .email-input:focus {
+        outline: 2px solid #7c3aed;
+        border-color: transparent;
+      }
 
       /* ── Buttons ────────────────────────────────────────────────────────── */
       .next-btn {
@@ -255,11 +277,17 @@
         font-weight: 600;
         font-family: inherit;
         cursor: pointer;
-        transition: background .12s;
+        transition: background 0.12s;
       }
-      .next-btn:hover { background: var(--blue-dk); }
-      .next-btn.btn-purple { background: #7c3aed; }
-      .next-btn.btn-purple:hover { background: #6d28d9; }
+      .next-btn:hover {
+        background: var(--blue-dk);
+      }
+      .next-btn.btn-purple {
+        background: #7c3aed;
+      }
+      .next-btn.btn-purple:hover {
+        background: #6d28d9;
+      }
 
       /* ── Sidebar ─────────────────────────────────────────────────────────── */
       aside {
@@ -274,18 +302,30 @@
         color: var(--con-txt);
       }
 
-      .panel { padding: 12px 14px; border-bottom: 1px solid #2d2d2d; flex-shrink: 0; }
+      .panel {
+        padding: 12px 14px;
+        border-bottom: 1px solid #2d2d2d;
+        flex-shrink: 0;
+      }
       .panel-title {
         font-size: 10px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: .1em;
+        letter-spacing: 0.1em;
         color: var(--con-dim);
         margin-bottom: 9px;
       }
 
-      .sig-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 12.5px; }
-      .sig-label { color: #b0b0b0; }
+      .sig-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 0;
+        font-size: 12.5px;
+      }
+      .sig-label {
+        color: #b0b0b0;
+      }
       .sig-val {
         font-size: 11px;
         font-weight: 600;
@@ -293,18 +333,55 @@
         border-radius: 10px;
         background: #2d2d2d;
         color: var(--con-dim);
-        letter-spacing: .02em;
+        letter-spacing: 0.02em;
       }
-      .sig-val.ok  { background: #1a3d1a; color: #5cb85c; }
-      .sig-val.warn { background: #3d2e0a; color: #f0a500; }
-      .sig-val.bad  { background: #3d0a0a; color: #f87171; }
+      .sig-val.ok {
+        background: #1a3d1a;
+        color: #5cb85c;
+      }
+      .sig-val.warn {
+        background: #3d2e0a;
+        color: #f0a500;
+      }
+      .sig-val.bad {
+        background: #3d0a0a;
+        color: #f87171;
+      }
 
-      .ck-row { display: flex; align-items: baseline; gap: 7px; padding: 4px 0; font-family: "Courier New", monospace; font-size: 11.5px; }
-      .ck-name { color: var(--con-a0); min-width: 38px; flex-shrink: 0; }
-      .ck-val { color: var(--con-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
-      .ck-val.set { color: #5cb85c; }
-      .ck-val.na  { color: var(--con-sup); font-style: italic; }
-      .ck-note { font-size: 10.5px; color: var(--con-dim); margin-top: 8px; line-height: 1.4; font-style: italic; }
+      .ck-row {
+        display: flex;
+        align-items: baseline;
+        gap: 7px;
+        padding: 4px 0;
+        font-family: "Courier New", monospace;
+        font-size: 11.5px;
+      }
+      .ck-name {
+        color: var(--con-a0);
+        min-width: 38px;
+        flex-shrink: 0;
+      }
+      .ck-val {
+        color: var(--con-dim);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 220px;
+      }
+      .ck-val.set {
+        color: #5cb85c;
+      }
+      .ck-val.na {
+        color: var(--con-sup);
+        font-style: italic;
+      }
+      .ck-note {
+        font-size: 10.5px;
+        color: var(--con-dim);
+        margin-top: 8px;
+        line-height: 1.4;
+        font-style: italic;
+      }
 
       .sig-info {
         cursor: help;
@@ -332,10 +409,13 @@
         line-height: 1.45;
         display: none;
         z-index: 200;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         pointer-events: none;
       }
-      .sig-info:hover::after { display: block; }
+      .sig-info:hover::after {
+        display: block;
+      }
 
       #log-header {
         padding: 10px 14px 8px;
@@ -345,7 +425,9 @@
         align-items: center;
         flex-shrink: 0;
       }
-      #log-header .panel-title { margin: 0; }
+      #log-header .panel-title {
+        margin: 0;
+      }
       #log-clear {
         font-size: 10px;
         color: var(--con-dim);
@@ -356,7 +438,9 @@
         padding: 0;
         text-decoration: underline;
       }
-      #log-clear:hover { color: #aaa; }
+      #log-clear:hover {
+        color: #aaa;
+      }
 
       #event-log {
         flex: 1;
@@ -367,95 +451,84 @@
         font-size: 11px;
         line-height: 1.55;
       }
-      #event-log::-webkit-scrollbar { width: 5px; }
-      #event-log::-webkit-scrollbar-track { background: #1a1a1a; }
-      #event-log::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+      #event-log::-webkit-scrollbar {
+        width: 5px;
+      }
+      #event-log::-webkit-scrollbar-track {
+        background: #1a1a1a;
+      }
+      #event-log::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 3px;
+      }
 
-      .log-entry { display: flex; gap: 7px; margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid #222; word-break: break-all; }
-      .log-ts    { color: var(--con-dim); white-space: nowrap; flex-shrink: 0; }
-      .log-body  { color: var(--con-txt); }
-      .log-fn    { color: var(--con-fn); }
-      .log-a0    { color: var(--con-a0); }
-      .log-a1    { color: var(--con-a1); }
-      .log-a2    { color: var(--con-a2); }
-      .log-obj   { color: var(--con-obj); }
-      .log-suppressed { color: var(--con-sup); font-style: italic; }
-      .log-blocked    { color: var(--con-blk); font-style: italic; }
-      .log-empty      { color: var(--con-dim); font-style: italic; padding: 4px 0; }
-      .log-inferred   { color: var(--con-sup); font-size: 10px; opacity: .8; }
-      .log-aam        { color: #a78bfa; font-size: 10px; }
-
-      /* ── Consent banner ─────────────────────────────────────────────────── */
-      #consent-banner {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: #fff;
-        border-top: 3px solid var(--blue);
-        box-shadow: 0 -4px 20px rgba(0,0,0,.14);
-        padding: 16px 24px;
+      .log-entry {
         display: flex;
-        align-items: center;
-        gap: 20px;
-        z-index: 200;
+        gap: 7px;
+        margin-bottom: 6px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid #222;
+        word-break: break-all;
       }
-      #consent-banner .cb-icon  { font-size: 28px; flex-shrink: 0; }
-      #consent-banner .cb-text  { flex: 1; }
-      #consent-banner .cb-text strong { display: block; margin-bottom: 3px; font-size: 15px; }
-      #consent-banner .cb-text p { font-size: 13px; color: var(--muted); line-height: 1.4; }
-      #consent-banner .cb-btns  { display: flex; gap: 10px; flex-shrink: 0; }
+      .log-ts {
+        color: var(--con-dim);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .log-body {
+        color: var(--con-txt);
+      }
+      .log-fn {
+        color: var(--con-fn);
+      }
+      .log-a0 {
+        color: var(--con-a0);
+      }
+      .log-a1 {
+        color: var(--con-a1);
+      }
+      .log-a2 {
+        color: var(--con-a2);
+      }
+      .log-obj {
+        color: var(--con-obj);
+      }
 
-      #accept-btn {
-        padding: 10px 22px;
-        background: var(--blue);
-        color: #fff;
-        border: none;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
-        font-family: inherit;
-        cursor: pointer;
+      .log-blocked {
+        color: var(--con-blk);
+        font-style: italic;
       }
-      #accept-btn:hover { background: var(--blue-dk); }
-
-      #decline-btn {
-        padding: 10px 18px;
-        background: #fff;
-        color: var(--text);
-        border: 2px solid var(--border);
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
-        font-family: inherit;
-        cursor: pointer;
+      .log-empty {
+        color: var(--con-dim);
+        font-style: italic;
+        padding: 4px 0;
       }
-      #decline-btn:hover { background: var(--bg); }
-      #consent-banner.hidden { display: none; }
+      .log-inferred {
+        color: var(--con-sup);
+        font-size: 10px;
+        opacity: 0.8;
+      }
+      .log-aam {
+        color: #a78bfa;
+        font-size: 10px;
+      }
 
       @media (max-width: 780px) {
-        #app { grid-template-columns: 1fr; grid-template-rows: var(--header-h) 1fr auto; }
-        aside { height: 360px; position: relative; top: 0; border-left: none; border-top: 1px solid #2d2d2d; }
-        #consent-banner { flex-wrap: wrap; }
-        #consent-banner .cb-btns { width: 100%; }
+        #app {
+          grid-template-columns: 1fr;
+          grid-template-rows: var(--header-h) 1fr auto;
+        }
+        aside {
+          height: 360px;
+          position: relative;
+          top: 0;
+          border-left: none;
+          border-top: 1px solid #2d2d2d;
+        }
       }
     </style>
   </head>
   <body>
-
-    <!-- ── Consent banner ──────────────────────────────────────────────────── -->
-    <div id="consent-banner">
-      <div class="cb-icon">🍪</div>
-      <div class="cb-text">
-        <strong>Cookie &amp; Tracking Notice</strong>
-        <p>This demonstration loads the Meta (Facebook) Pixel and fires tracking events to Facebook's servers. Accept to enable tracking; decline to suppress the pixel entirely.</p>
-      </div>
-      <div class="cb-btns">
-        <button id="accept-btn">Accept &amp; Enable Tracking</button>
-        <button id="decline-btn">Decline</button>
-      </div>
-    </div>
-
     <!-- ── App shell ───────────────────────────────────────────────────────── -->
     <div id="app">
       <header>
@@ -463,7 +536,9 @@
         <span class="sep">|</span>
         <span class="sub">Pixel&nbsp;ID:&nbsp;<span id="hdr-pid">—</span></span>
         <span class="spacer"></span>
-        <span class="status-chip" id="status-chip">Consent pending</span>
+        <span class="status-chip accepted" id="status-chip"
+          >Tracking: Active</span
+        >
       </header>
 
       <main>
@@ -477,13 +552,26 @@
         <div class="panel">
           <div class="panel-title">Signals</div>
           <div class="sig-row">
-            <span class="sig-label">Pixel script <span class="sig-info" data-tip="Whether local fbevents.js (2021-03-02 archive) loaded successfully. Failure indicates a network error or blocking — also prevents InferredEvents and AAM.">ⓘ</span></span>
-            <span class="sig-val" id="sig-pixel">pending</span>
+            <span class="sig-label"
+              >Pixel script
+              <span
+                class="sig-info"
+                data-tip="Whether local fbevents.js (2021-03-02 archive) loaded successfully. Failure indicates a network error or blocking — also prevents InferredEvents and AAM."
+                >ⓘ</span
+              ></span
+            >
+            <span class="sig-val" id="sig-pixel">—</span>
           </div>
 
-
           <div class="sig-row">
-            <span class="sig-label">Adv. Matching <span class="sig-info" data-tip="Reactive detection only — activates when a beacon containing a hashed field (udff[em]) is intercepted. Will not show until a form with PII is submitted (Card 8).">ⓘ</span></span>
+            <span class="sig-label"
+              >Adv. Matching
+              <span
+                class="sig-info"
+                data-tip="Reactive detection only — activates when a beacon containing a hashed field (udff[em]) is intercepted. Will not show until a form with PII is submitted (Card 8)."
+                >ⓘ</span
+              ></span
+            >
             <span class="sig-val" id="sig-aam">—</span>
           </div>
         </div>
@@ -491,7 +579,9 @@
         <div class="panel">
           <div class="panel-title">Browser</div>
           <div class="ck-row">
-            <span class="ck-val set" id="ua-val" style="max-width:100%">—</span>
+            <span class="ck-val set" id="ua-val" style="max-width: 100%"
+              >—</span
+            >
           </div>
         </div>
 
@@ -507,7 +597,8 @@
           </div>
           <p class="ck-note">
             First-party cookies set by fbevents.js on <em>this</em> domain.
-            <code>_fbc</code> only appears when the landing URL contains <code>fbclid=</code> (Facebook ad click).
+            <code>_fbc</code> only appears when the landing URL contains
+            <code>fbclid=</code> (Facebook ad click).
           </p>
         </div>
 
@@ -524,58 +615,44 @@
     <script>
       // ── CONFIGURATION ────────────────────────────────────────────────────────
       const PIXEL_ID =
-        new URLSearchParams(location.search).get("pixelId") || "1308318914571848";
+        new URLSearchParams(location.search).get("pixelId") ||
+        "1308318914571848";
 
       document.getElementById("hdr-pid").textContent = PIXEL_ID;
 
       // ── EVENT LOG ────────────────────────────────────────────────────────────
       const eventLog = document.getElementById("event-log");
-      const _fbqWrapperLog = {};
 
-      function logFbq(args, special) {
+      const FB_STANDARD_EVENTS = new Set([
+        "PageView","ViewContent","Search","AddToCart","AddToWishlist",
+        "InitiateCheckout","AddPaymentInfo","Purchase","Lead",
+        "CompleteRegistration","Contact","CustomizeProduct","Donate",
+        "FindLocation","Schedule","StartTrial","SubmitApplication","Subscribe",
+      ]);
+
+      function logEntry(body) {
         const empty = eventLog.querySelector(".log-empty");
         if (empty) empty.remove();
-
         const entry = document.createElement("div");
         entry.className = "log-entry";
-
         const d = new Date();
-        const ts =
-          d.toTimeString().slice(0, 8) + "." +
-          String(d.getMilliseconds()).padStart(3, "0");
-
-        let body;
-        if (special === "suppressed") {
-          body = '<span class="log-suppressed">Pixel suppressed — user declined consent</span>';
-        } else if (special === "blocked") {
-          body = '<span class="log-blocked">fbevents.js blocked (ad blocker or network error)</span>';
-        } else if (special === "inferred") {
-          const ev = args[0];
-          const extra = args[1] ? ` <span class="log-aam">[${args[1]}]</span>` : "";
-          body =
-            `<span class="log-fn">fbq</span>(<wbr>` +
-            `<span class="log-a0">'trackCustom'</span>, ` +
-            `<span class="log-a1">'${ev}'</span>)` +
-            ` <span class="log-inferred">[InferredEvents]</span>${extra}`;
-        } else {
-          const evKey = Array.from(args)[1];
-          if (evKey) _fbqWrapperLog[evKey] = Date.now();
-          const parts = Array.from(args).map((a, i) => {
-            if (typeof a === "string") {
-              const cls = ["log-a0", "log-a1", "log-a2"][i] || "log-a2";
-              return `<span class="${cls}">'${a}'</span>`;
-            }
-            if (typeof a === "object" && a !== null) {
-              return `<span class="log-obj">${JSON.stringify(a)}</span>`;
-            }
-            return String(a);
-          });
-          body = `<span class="log-fn">fbq</span>(<wbr>${parts.join(", ")})`;
-        }
-
+        const ts = d.toTimeString().slice(0, 8) + "." + String(d.getMilliseconds()).padStart(3, "0");
         entry.innerHTML = `<span class="log-ts">${ts}</span><span class="log-body">${body}</span>`;
         eventLog.appendChild(entry);
         eventLog.scrollTop = eventLog.scrollHeight;
+        return entry.querySelector(".log-body");
+      }
+
+      function logInit(pixelId) {
+        logEntry(
+          `<span class="log-fn">fbq</span>(<wbr>` +
+          `<span class="log-a0">'init'</span>, ` +
+          `<span class="log-a1">'${pixelId}'</span>)`
+        );
+      }
+
+      function logBlocked() {
+        logEntry('<span class="log-blocked">fbevents.js blocked (ad blocker or network error)</span>');
       }
 
       document.getElementById("log-clear").addEventListener("click", () => {
@@ -583,11 +660,12 @@
       });
 
       // ── BEACON INTERCEPTOR ───────────────────────────────────────────────────
-      // Catches InferredEvents beacons (SubscribedButtonClick etc.) sent directly
-      // via Image/sendBeacon/XHR without going through window.fbq.
+      // All pixel events — direct fbq() calls and InferredEvents alike — are
+      // logged here from the actual beacon sent to facebook.com/tr.
       (function () {
         function parseFbBeacon(url) {
-          if (typeof url !== "string" || !url.includes("facebook.com/tr")) return null;
+          if (typeof url !== "string" || !url.includes("facebook.com/tr"))
+            return null;
           try {
             const qs = new URLSearchParams(url.split("?")[1] || "");
             const ev = qs.get("ev");
@@ -596,17 +674,33 @@
             const em = emFf || emUd;
             const emKey = emFf ? "udff[em]" : "ud[em]";
             return ev ? { ev, em, emKey } : null;
-          } catch (_) { return null; }
+          } catch (_) {
+            return null;
+          }
         }
 
         function onBeacon(url) {
           const parsed = parseFbBeacon(url);
           if (!parsed) return;
           const { ev, em, emKey } = parsed;
-          if (_fbqWrapperLog[ev] && Date.now() - _fbqWrapperLog[ev] < 500) return;
           if (em) setSig("sig-aam", "Active", "ok");
-          const extra = em ? `${emKey}=${em.slice(0, 8)}…` : null;
-          logFbq(extra ? [ev, extra] : [ev], "inferred");
+          const aamSpan = em
+            ? ` <span class="log-aam">[${emKey}=${em.slice(0, 8)}…]</span>`
+            : "";
+          let body;
+          if (FB_STANDARD_EVENTS.has(ev)) {
+            body =
+              `<span class="log-fn">fbq</span>(<wbr>` +
+              `<span class="log-a0">'track'</span>, ` +
+              `<span class="log-a1">'${ev}'</span>)${aamSpan}`;
+          } else {
+            body =
+              `<span class="log-fn">fbq</span>(<wbr>` +
+              `<span class="log-a0">'trackCustom'</span>, ` +
+              `<span class="log-a1">'${ev}'</span>)` +
+              ` <span class="log-inferred">[InferredEvents]</span>${aamSpan}`;
+          }
+          logEntry(body);
         }
 
         const imgDesc = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, "src");
@@ -639,8 +733,13 @@
         document.cookie.split(";").forEach((s) => {
           const eq = s.indexOf("=");
           if (eq > 0) {
-            try { map[s.slice(0, eq).trim()] = decodeURIComponent(s.slice(eq + 1).trim()); }
-            catch (_) { map[s.slice(0, eq).trim()] = s.slice(eq + 1).trim(); }
+            try {
+              map[s.slice(0, eq).trim()] = decodeURIComponent(
+                s.slice(eq + 1).trim(),
+              );
+            } catch (_) {
+              map[s.slice(0, eq).trim()] = s.slice(eq + 1).trim();
+            }
           }
         });
         return map;
@@ -648,7 +747,10 @@
 
       function refreshCookies() {
         const c = parseCookies();
-        [["_fbp", "ck-fbp"], ["_fbc", "ck-fbc"]].forEach(([name, id]) => {
+        [
+          ["_fbp", "ck-fbp"],
+          ["_fbc", "ck-fbc"],
+        ].forEach(([name, id]) => {
           const el = document.getElementById(id);
           const v = c[name];
           if (v) {
@@ -675,25 +777,23 @@
       function updateSignals() {
         if (pixelLoaded === true) {
           setSig("sig-pixel", "Loaded", "ok");
-        } else if (pixelLoaded === false && consentState === "declined") {
-          setSig("sig-pixel", "Suppressed", "warn");
         } else if (pixelLoaded === false) {
           setSig("sig-pixel", "Blocked", "bad");
-        } else {
-          setSig("sig-pixel", "Pending", "");
         }
       }
 
-      // ── PIXEL STUB + CONSENT GATE ────────────────────────────────────────────
-      let consentState = "pending";
+      // ── PIXEL STUB ───────────────────────────────────────────────────────────
       let pixelReady = false;
 
       function installStub() {
         if (window.fbq) return;
         const n = (window.fbq = function () {
-          logFbq(arguments);
-          if (n.callMethod) { n.callMethod.apply(n, arguments); }
-          else { n.queue.push(arguments); }
+          if (arguments[0] === "init") logInit(arguments[1]);
+          if (n.callMethod) {
+            n.callMethod.apply(n, arguments);
+          } else {
+            n.queue.push(arguments);
+          }
         });
         window._fbq = n;
         n.push = n;
@@ -707,8 +807,14 @@
           const s = document.createElement("script");
           s.async = true;
           s.src = "./fbevents.js";
-          s.onload = () => { pixelLoaded = true; resolve(); };
-          s.onerror = () => { pixelLoaded = false; reject(); };
+          s.onload = () => {
+            pixelLoaded = true;
+            resolve();
+          };
+          s.onerror = () => {
+            pixelLoaded = false;
+            reject();
+          };
           document.head.appendChild(s);
         });
       }
@@ -726,33 +832,12 @@
           setTimeout(refreshCookies, 600);
           setTimeout(refreshCookies, 2500);
         } catch (_) {
-          logFbq([], "blocked");
+          logBlocked();
           updateSignals();
         }
       }
 
-      // ── CONSENT BANNER ───────────────────────────────────────────────────────
-      const consentBanner = document.getElementById("consent-banner");
-      const statusChip = document.getElementById("status-chip");
-
-      document.getElementById("accept-btn").addEventListener("click", () => {
-        consentState = "accepted";
-        consentBanner.classList.add("hidden");
-        statusChip.textContent = "Tracking: Accepted";
-        statusChip.className = "status-chip accepted";
-        initPixel();
-      });
-
-      document.getElementById("decline-btn").addEventListener("click", () => {
-        consentState = "declined";
-        consentBanner.classList.add("hidden");
-        statusChip.textContent = "Tracking: Declined";
-        statusChip.className = "status-chip declined";
-        installStub();
-        pixelLoaded = false;
-        logFbq([], "suppressed");
-        updateSignals();
-      });
+      initPixel();
 
       // ── TEST CARD BUILDER ────────────────────────────────────────────────────
 
@@ -797,132 +882,22 @@
       function flashFeedback(el, msg) {
         el.textContent = msg;
         clearTimeout(el._t);
-        el._t = setTimeout(() => { el.textContent = ""; }, 3000);
+        el._t = setTimeout(() => {
+          el.textContent = "";
+        }, 3000);
       }
 
       function buildCards() {
         const grid = document.getElementById("test-grid");
 
-        // ── Card 1: div.big_button > label.radio → SubscribedButtonClick (InferredEvents) ──
+        // ── Card 1: Direct — Lead ──
         {
           const { card, body } = makeCard(
-            "InferredEvents", "tag-inferred", "note-inferred",
-            "SubscribedButtonClick — div.big_button",
-            "Mirrors BH 2021 HTML. fbevents.js InferredEvents fires SubscribedButtonClick automatically on every label click. No explicit fbq() call is made."
-          );
-          const form = document.createElement("form");
-          form.action = "#";
-          form.onsubmit = () => false;
-          const fb = makeFeedback(body);
-
-          ["Going well overall", "Some challenges", "Pretty difficult"].forEach((opt) => {
-            const wrap = document.createElement("div");
-            wrap.className = "big_button";
-            const lbl = document.createElement("label");
-            lbl.className = "radio big-opt";
-            const inp = document.createElement("input");
-            inp.type = "radio";
-            inp.name = "c1";
-            inp.style.display = "none";
-            lbl.appendChild(inp);
-            lbl.appendChild(document.createTextNode(opt));
-            inp.addEventListener("click", (e) => e.stopPropagation());
-            lbl.addEventListener("click", (e) => {
-              if (e.target === inp) return;
-              inp.checked = true;
-              if (window.fbq) flashFeedback(fb, `✓ Clicked "${opt}" — watch for SubscribedButtonClick in log`);
-            });
-            wrap.appendChild(lbl);
-            form.appendChild(wrap);
-          });
-
-          body.insertBefore(form, fb);
-          grid.appendChild(card);
-        }
-
-        // ── Card 2: visible radio + label → NO SubscribedButtonClick ──
-        {
-          const { card, body } = makeCard(
-            "InferredEvents", "tag-inferred", "note-inferred",
-            "No SubscribedButtonClick — visible radio inside label",
-            "Clicking anywhere on this label (text or radio dot) does NOT fire SubscribedButtonClick. Because the input is visible and wrapped inside the label, clicking the label text also triggers an input click — InferredEvents sees an input click, not a button-like element, and does not fire."
-          );
-          const form = document.createElement("form");
-          form.action = "#";
-          form.onsubmit = () => false;
-
-          ["Just exploring", "A specific goal", "Not sure yet"].forEach((opt, i) => {
-            const lbl = document.createElement("label");
-            lbl.className = "option-radio";
-            const inp = document.createElement("input");
-            inp.type = "radio";
-            inp.name = "c2";
-            inp.value = i;
-            lbl.appendChild(inp);
-            lbl.appendChild(document.createTextNode(" " + opt));
-            form.appendChild(lbl);
-          });
-
-          body.insertBefore(form, body.querySelector(".card-feedback") || null);
-          grid.appendChild(card);
-        }
-
-        // ── Card 3: <button type="button"> inside form → SubscribedButtonClick ──
-        {
-          const { card, body } = makeCard(
-            "InferredEvents", "tag-inferred", "note-inferred",
-            "SubscribedButtonClick — <button type=\"button\"> in form",
-            "A plain <button type=button> inside a <form> triggers SubscribedButtonClick via InferredEvents."
-          );
-          const form = document.createElement("form");
-          form.action = "#";
-          form.onsubmit = () => false;
-          const fb = makeFeedback(body);
-
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "next-btn";
-          btn.textContent = "Fire SubscribedButtonClick";
-          btn.addEventListener("click", () => {
-            if (window.fbq) flashFeedback(fb, "✓ Button clicked — watch for SubscribedButtonClick in log");
-          });
-          form.appendChild(btn);
-          body.insertBefore(form, fb);
-          grid.appendChild(card);
-        }
-
-        // ── Card 4: <select> onChange → NO SubscribedButtonClick ──
-        {
-          const { card, body } = makeCard(
-            "InferredEvents", "tag-inferred", "note-inferred",
-            "No SubscribedButtonClick — <select> onChange",
-            "Selecting from a dropdown does NOT trigger SubscribedButtonClick. onChange is not a button-like interaction."
-          );
-          const form = document.createElement("form");
-          form.action = "#";
-          form.onsubmit = () => false;
-          const fb = makeFeedback(body);
-
-          const sel = document.createElement("select");
-          sel.name = "c4";
-          sel.innerHTML =
-            '<option value="">Select an option…</option>' +
-            ["Northeast", "Southeast", "Midwest", "Southwest", "West Coast", "International"]
-              .map((r, i) => `<option value="${i + 1}">${r}</option>`).join("");
-          sel.addEventListener("change", () => {
-            if (sel.value && window.fbq) flashFeedback(fb, "✓ Changed — no SubscribedButtonClick should appear");
-          });
-          form.appendChild(sel);
-          body.insertBefore(form, fb);
-          grid.appendChild(card);
-        }
-
-        // ── Card 5: Explicit — Lead ──
-        {
-          const { card, body } = makeCard(
-            "Explicit", "tag-explicit", "note-explicit",
+            "direct fbq() call",
+            "tag-direct",
+            "note-direct",
             "fbq('track', 'Lead')",
-            "Calls fbq('track', 'Lead') directly. Always appears in the event log regardless of InferredEvents config."
+            "Calls fbq('track', 'Lead') directly.",
           );
           const fb = makeFeedback(body);
           const btn = document.createElement("button");
@@ -930,18 +905,24 @@
           btn.className = "next-btn";
           btn.textContent = "Fire Lead event";
           btn.addEventListener("click", () => {
-            if (window.fbq) { fbq("track", "Lead"); refreshCookies(); flashFeedback(fb, "✓ fbq('track', 'Lead') called"); }
+            if (window.fbq) {
+              fbq("track", "Lead");
+              refreshCookies();
+              flashFeedback(fb, "✓ fbq('track', 'Lead') called");
+            }
           });
           body.appendChild(btn);
           grid.appendChild(card);
         }
 
-        // ── Card 6: Explicit — CompleteRegistration ──
+        // ── Card 2: Direct — CompleteRegistration ──
         {
           const { card, body } = makeCard(
-            "Explicit", "tag-explicit", "note-explicit",
+            "direct fbq() call",
+            "tag-direct",
+            "note-direct",
             "fbq('track', 'CompleteRegistration')",
-            "Calls fbq('track', 'CompleteRegistration', {status: true}) directly."
+            "Calls fbq('track', 'CompleteRegistration', {status: true}) directly.",
           );
           const fb = makeFeedback(body);
           const btn = document.createElement("button");
@@ -949,18 +930,26 @@
           btn.className = "next-btn";
           btn.textContent = "Fire CompleteRegistration";
           btn.addEventListener("click", () => {
-            if (window.fbq) { fbq("track", "CompleteRegistration", { status: true }); flashFeedback(fb, "✓ fbq('track', 'CompleteRegistration', {status:true}) called"); }
+            if (window.fbq) {
+              fbq("track", "CompleteRegistration", { status: true });
+              flashFeedback(
+                fb,
+                "✓ fbq('track', 'CompleteRegistration', {status:true}) called",
+              );
+            }
           });
           body.appendChild(btn);
           grid.appendChild(card);
         }
 
-        // ── Card 7: Explicit — Purchase ──
+        // ── Card 3: Direct — Purchase ──
         {
           const { card, body } = makeCard(
-            "Explicit", "tag-explicit", "note-explicit",
+            "direct fbq() call",
+            "tag-direct",
+            "note-direct",
             "fbq('track', 'Purchase')",
-            "Calls fbq('track', 'Purchase', {value: 29.99, currency: 'USD'}) directly."
+            "Calls fbq('track', 'Purchase', {value: 29.99, currency: 'USD'}) directly.",
           );
           const fb = makeFeedback(body);
           const btn = document.createElement("button");
@@ -968,18 +957,26 @@
           btn.className = "next-btn";
           btn.textContent = "Fire Purchase ($29.99)";
           btn.addEventListener("click", () => {
-            if (window.fbq) { fbq("track", "Purchase", { value: 29.99, currency: "USD" }); flashFeedback(fb, "✓ fbq('track', 'Purchase', {value:29.99, currency:'USD'}) called"); }
+            if (window.fbq) {
+              fbq("track", "Purchase", { value: 29.99, currency: "USD" });
+              flashFeedback(
+                fb,
+                "✓ fbq('track', 'Purchase', {value:29.99, currency:'USD'}) called",
+              );
+            }
           });
           body.appendChild(btn);
           grid.appendChild(card);
         }
 
-        // ── Card 8: AAM — email field ──
+        // ── Card 4: AAM — email field ──
         {
           const { card, body } = makeCard(
-            "AAM", "tag-aam", "note-aam",
+            "AAM",
+            "tag-aam",
+            "note-aam",
             "Automatic Advanced Matching — email field",
-            "fbevents.js scans &lt;input type=email&gt; fields and hashes the value automatically. Type an email and click Submit — if AAM is active, the beacon will include ud[em] (visible in the event log). Once fbevents.js picks up the email it stores the hash internally for the page session — all subsequent beacons will include ud[em] even if the field is cleared. Reload the page to reset."
+            "The identity plugin (loaded via signals-config.js) scans form fields and hashes PII automatically. Type an email and click Submit — ud[em] will appear in the beacon if AAM is active. Once captured, the hash persists for the page session even if the field is cleared.",
           );
           const form = document.createElement("form");
           form.action = "#";
@@ -998,11 +995,63 @@
           btn.className = "next-btn btn-purple";
           btn.textContent = "Submit & fire Lead";
           btn.addEventListener("click", () => {
-            if (window.fbq) { fbq("track", "Lead"); refreshCookies(); flashFeedback(fb, "✓ Lead fired — check event log for ud[em] if AAM picked up the email"); }
+            if (window.fbq) {
+              fbq("track", "Lead");
+              refreshCookies();
+              flashFeedback(
+                fb,
+                "✓ Lead fired — check event log for ud[em] if AAM picked up the email",
+              );
+            }
           });
 
           form.appendChild(emailInput);
           form.appendChild(btn);
+          body.insertBefore(form, fb);
+          grid.appendChild(card);
+        }
+
+        // ── Card 5: div.big_button > label.radio → SubscribedButtonClick (InferredEvents) ──
+        {
+          const { card, body } = makeCard(
+            "InferredEvents",
+            "tag-inferred",
+            "note-inferred",
+            "SubscribedButtonClick — div.big_button",
+            "The InferredEvents plugin fires SubscribedButtonClick automatically on each label click. No direct fbq() call is made.",
+          );
+          const form = document.createElement("form");
+          form.action = "#";
+          form.onsubmit = () => false;
+          const fb = makeFeedback(body);
+
+          ["Going well overall", "Some challenges", "Pretty difficult"].forEach(
+            (opt) => {
+              const wrap = document.createElement("div");
+              wrap.className = "big_button";
+              const lbl = document.createElement("label");
+              lbl.className = "radio big-opt";
+              const inp = document.createElement("input");
+              inp.type = "radio";
+              inp.name = "c5";
+              inp.style.display = "none";
+              lbl.appendChild(inp);
+              lbl.appendChild(document.createTextNode(opt));
+              inp.addEventListener("click", (e) => e.stopPropagation());
+              lbl.addEventListener("click", (e) => {
+                if (e.target === inp) return;
+                inp.checked = true;
+                if (window.fbq)
+                  flashFeedback(
+                    fb,
+                    `✓ Clicked "${opt}" — watch for SubscribedButtonClick in log`,
+                  );
+              });
+              wrap.appendChild(lbl);
+              form.appendChild(wrap);
+            },
+          );
+
           body.insertBefore(form, fb);
           grid.appendChild(card);
         }
@@ -1011,10 +1060,15 @@
       // ── INIT ─────────────────────────────────────────────────────────────────
       function parseBrowser(ua) {
         let m;
-        if ((m = ua.match(/Firefox\/([\d.]+)/)))    return "Firefox " + m[1];
-        if (/Chrome\//.test(ua) && !/Edg\//.test(ua) && (m = ua.match(/Chrome\/([\d.]+)/)))
-                                                 return "Chrome " + m[1];
-        if ((m = ua.match(/Version\/([\d.]+).*Safari/))) return "Safari " + m[1];
+        if ((m = ua.match(/Firefox\/([\d.]+)/))) return "Firefox " + m[1];
+        if (
+          /Chrome\//.test(ua) &&
+          !/Edg\//.test(ua) &&
+          (m = ua.match(/Chrome\/([\d.]+)/))
+        )
+          return "Chrome " + m[1];
+        if ((m = ua.match(/Version\/([\d.]+).*Safari/)))
+          return "Safari " + m[1];
         return ua;
       }
 
