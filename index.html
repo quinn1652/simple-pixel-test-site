@@ -96,9 +96,6 @@
       .status-chip.accepted {
         background: var(--green);
       }
-      .status-chip.declined {
-        background: var(--red);
-      }
 
       /* ── Main content area ──────────────────────────────────────────────── */
       main {
@@ -181,14 +178,9 @@
       .card-note.note-inferred {
         border-left-color: #d97706;
       }
-      .card-note.note-direct {
-        border-left-color: var(--blue);
-      }
       .card-note.note-aam {
         border-left-color: #7c3aed;
       }
-
-
 
       /* ── Big-button options ─────────────────────────────────────────────── */
       .big_button {
@@ -543,9 +535,7 @@
               <h3 class="card-title">fbq('track', 'Lead')</h3>
             </div>
             <div class="card-body">
-              <p class="card-note note-direct">
-                Calls fbq('track', 'Lead') directly.
-              </p>
+              <p class="card-note">Calls fbq('track', 'Lead') directly.</p>
               <button type="button" class="next-btn" id="btn-lead">
                 Fire Lead event
               </button>
@@ -559,7 +549,7 @@
               <h3 class="card-title">fbq('track', 'CompleteRegistration')</h3>
             </div>
             <div class="card-body">
-              <p class="card-note note-direct">
+              <p class="card-note">
                 Calls fbq('track', 'CompleteRegistration', {status: true})
                 directly.
               </p>
@@ -576,7 +566,7 @@
               <h3 class="card-title">fbq('track', 'Purchase')</h3>
             </div>
             <div class="card-body">
-              <p class="card-note note-direct">
+              <p class="card-note">
                 Calls fbq('track', 'Purchase', {value: 29.99, currency: 'USD'})
                 directly.
               </p>
@@ -592,14 +582,14 @@
               <span class="card-tag tag-aam">AAM</span>
               <span class="card-tag tag-direct">direct fbq() call</span>
               <h3 class="card-title">
-                Automatic Advanced Matching — email field
+                Automatic Advanced Matching (email field)
               </h3>
             </div>
             <div class="card-body">
               <p class="card-note note-aam">
                 The identity plugin (loaded via signals-config.js) scans the
                 entire page for PII fields and hashes them automatically. Type
-                an email and click Submit — ud[em] will appear in the beacon.
+                an email, click Submit, and ud[em] will appear in the beacon.
                 Once captured, the hash persists for the page session and
                 attaches to all subsequent beacons from any event, including
                 InferredEvents.
@@ -623,7 +613,7 @@
           <div class="test-card">
             <div class="card-header">
               <span class="card-tag tag-inferred">InferredEvents</span>
-              <h3 class="card-title">SubscribedButtonClick — div.big_button</h3>
+              <h3 class="card-title">SubscribedButtonClick (div.big_button)</h3>
             </div>
             <div class="card-body">
               <p class="card-note note-inferred">
@@ -679,7 +669,7 @@
               >Adv. Matching
               <span
                 class="sig-info"
-                data-tip="Reactive detection only — activates when a beacon containing a hashed field (udff[em]) is intercepted. Will not show until a form with PII is submitted (Card 4)."
+                data-tip="Reactive detection only. Activates when a beacon containing a hashed field (udff[em]) is intercepted. Will not show until a form with PII is submitted (Card 4)."
                 >ⓘ</span
               ></span
             >
@@ -917,8 +907,6 @@
       }
 
       // ── PIXEL STUB ───────────────────────────────────────────────────────────
-      let pixelReady = false;
-
       function installStub() {
         if (window.fbq) return;
         const n = (window.fbq = function () {
@@ -954,8 +942,6 @@
       }
 
       async function initPixel() {
-        if (pixelReady) return;
-        pixelReady = true;
         installStub();
         try {
           await loadFbevents();
@@ -976,7 +962,10 @@
       // ── CARD EVENT LISTENERS ─────────────────────────────────────────────────
 
       document.getElementById("btn-lead").addEventListener("click", () => {
-        if (window.fbq) { fbq("track", "Lead"); refreshCookies(); }
+        if (window.fbq) {
+          fbq("track", "Lead");
+          refreshCookies();
+        }
       });
 
       document.getElementById("btn-cr").addEventListener("click", () => {
@@ -984,22 +973,22 @@
       });
 
       document.getElementById("btn-purchase").addEventListener("click", () => {
-        if (window.fbq) fbq("track", "Purchase", { value: 29.99, currency: "USD" });
+        if (window.fbq)
+          fbq("track", "Purchase", { value: 29.99, currency: "USD" });
       });
 
       document.getElementById("btn-aam").addEventListener("click", () => {
-        if (window.fbq) { fbq("track", "Lead"); refreshCookies(); }
+        if (window.fbq) {
+          fbq("track", "Lead");
+          refreshCookies();
+        }
       });
 
-      document.querySelectorAll("#form-inferred input[type=radio]").forEach((inp) => {
-        inp.addEventListener("click", (e) => e.stopPropagation());
-      });
-      document.querySelectorAll("#form-inferred label").forEach((lbl) => {
-        lbl.addEventListener("click", (e) => {
-          if (e.target.type === "radio") return;
-          lbl.querySelector("input").checked = true;
+      document
+        .querySelectorAll("#form-inferred input[type=radio]")
+        .forEach((inp) => {
+          inp.addEventListener("click", (e) => e.stopPropagation());
         });
-      });
 
       // ── INIT ─────────────────────────────────────────────────────────────────
       function parseBrowser(ua) {
@@ -1020,7 +1009,6 @@
       uaEl.textContent = parseBrowser(navigator.userAgent);
       uaEl.title = navigator.userAgent;
 
-      updateSignals();
       refreshCookies();
     </script>
   </body>
