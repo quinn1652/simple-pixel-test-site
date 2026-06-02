@@ -818,7 +818,7 @@
               `<span class="log-a1">'${ev}'</span>)` +
               ` <span class="log-inferred">[InferredEvents]</span>${aamSpan}`;
           }
-          logEntry(body);
+          return logEntry(body);
         }
 
         const imgDesc = Object.getOwnPropertyDescriptor(
@@ -830,8 +830,14 @@
             configurable: true,
             get: imgDesc.get,
             set(val) {
-              onBeacon(val);
+              const logBody = onBeacon(val);
               imgDesc.set.call(this, val);
+              if (logBody) {
+                this.addEventListener("error", () => {
+                  logBody.innerHTML +=
+                    ' <span class="log-blocked">[blocked]</span>';
+                }, { once: true });
+              }
             },
           });
         }
