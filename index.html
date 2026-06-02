@@ -23,7 +23,6 @@
         --con-a0: #9cdcfe;
         --con-a1: #c586c0;
         --con-a2: #ce9178;
-        --con-obj: #4ec9b0;
         --con-sup: #f0a500;
         --con-blk: #f87171;
         --sidebar-w: 340px;
@@ -324,10 +323,6 @@
         background: #1a3d1a;
         color: #5cb85c;
       }
-      .sig-val.warn {
-        background: #3d2e0a;
-        color: #f0a500;
-      }
       .sig-val.bad {
         background: #3d0a0a;
         color: #f87171;
@@ -355,10 +350,6 @@
       }
       .ck-val.set {
         color: #5cb85c;
-      }
-      .ck-val.na {
-        color: var(--con-sup);
-        font-style: italic;
       }
       .ck-note {
         font-size: 10.5px;
@@ -475,10 +466,6 @@
       .log-a2 {
         color: var(--con-a2);
       }
-      .log-obj {
-        color: var(--con-obj);
-      }
-
       .log-blocked {
         color: var(--con-blk);
         font-style: italic;
@@ -521,9 +508,7 @@
         <span class="sep">|</span>
         <span class="sub">Pixel&nbsp;ID:&nbsp;<span id="hdr-pid">—</span></span>
         <span class="spacer"></span>
-        <span class="status-chip accepted" id="status-chip"
-          >Tracking: Active</span
-        >
+        <span class="status-chip accepted">Tracking: Active</span>
       </header>
 
       <main>
@@ -594,7 +579,7 @@
                 attaches to all subsequent beacons from any event, including
                 InferredEvents.
               </p>
-              <form action="#" onsubmit="return false;">
+              <form onsubmit="return false;">
                 <input
                   type="email"
                   name="email"
@@ -620,7 +605,7 @@
                 The InferredEvents plugin fires SubscribedButtonClick
                 automatically on each label click. No direct fbq() call is made.
               </p>
-              <form action="#" onsubmit="return false;" id="form-inferred">
+              <form onsubmit="return false;" id="form-inferred">
                 <div class="big_button">
                   <label class="radio big-opt"
                     ><input type="radio" name="c5" style="display: none" />Going
@@ -756,7 +741,6 @@
         entry.innerHTML = `<span class="log-ts">${ts}</span><span class="log-body">${body}</span>`;
         eventLog.appendChild(entry);
         eventLog.scrollTop = eventLog.scrollHeight;
-        return entry.querySelector(".log-body");
       }
 
       function logInit(pixelId) {
@@ -979,26 +963,21 @@
       // ── CARD EVENT LISTENERS ─────────────────────────────────────────────────
 
       document.getElementById("btn-lead").addEventListener("click", () => {
-        if (window.fbq) {
-          fbq("track", "Lead");
-          refreshCookies();
-        }
+        fbq("track", "Lead");
+        refreshCookies();
       });
 
       document.getElementById("btn-cr").addEventListener("click", () => {
-        if (window.fbq) fbq("track", "CompleteRegistration", { status: true });
+        fbq("track", "CompleteRegistration", { status: true });
       });
 
       document.getElementById("btn-purchase").addEventListener("click", () => {
-        if (window.fbq)
-          fbq("track", "Purchase", { value: 29.99, currency: "USD" });
+        fbq("track", "Purchase", { value: 29.99, currency: "USD" });
       });
 
       document.getElementById("btn-aam").addEventListener("click", () => {
-        if (window.fbq) {
-          fbq("track", "Lead");
-          refreshCookies();
-        }
+        fbq("track", "Lead");
+        refreshCookies();
       });
 
       document
