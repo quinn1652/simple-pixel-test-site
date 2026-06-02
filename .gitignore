@@ -5,3 +5,4 @@ chrome-versions
 firefox-versions
 chrome-versions/*
 firefox-versions/*
+.DS_Store
