@@ -188,13 +188,6 @@
         border-left-color: #7c3aed;
       }
 
-      .card-feedback {
-        font-size: 12px;
-        color: var(--green);
-        font-family: "Courier New", monospace;
-        margin-top: 10px;
-        min-height: 18px;
-      }
 
 
       /* ── Big-button options ─────────────────────────────────────────────── */
@@ -542,8 +535,126 @@
       </header>
 
       <main>
-        <div class="test-grid" id="test-grid">
-          <!-- populated by JS -->
+        <div class="test-grid">
+          <!-- ── Card 1: Lead ── -->
+          <div class="test-card">
+            <div class="card-header">
+              <span class="card-tag tag-direct">direct fbq() call</span>
+              <h3 class="card-title">fbq('track', 'Lead')</h3>
+            </div>
+            <div class="card-body">
+              <p class="card-note note-direct">
+                Calls fbq('track', 'Lead') directly.
+              </p>
+              <button type="button" class="next-btn" id="btn-lead">
+                Fire Lead event
+              </button>
+            </div>
+          </div>
+
+          <!-- ── Card 2: CompleteRegistration ── -->
+          <div class="test-card">
+            <div class="card-header">
+              <span class="card-tag tag-direct">direct fbq() call</span>
+              <h3 class="card-title">fbq('track', 'CompleteRegistration')</h3>
+            </div>
+            <div class="card-body">
+              <p class="card-note note-direct">
+                Calls fbq('track', 'CompleteRegistration', {status: true})
+                directly.
+              </p>
+              <button type="button" class="next-btn" id="btn-cr">
+                Fire CompleteRegistration
+              </button>
+            </div>
+          </div>
+
+          <!-- ── Card 3: Purchase ── -->
+          <div class="test-card">
+            <div class="card-header">
+              <span class="card-tag tag-direct">direct fbq() call</span>
+              <h3 class="card-title">fbq('track', 'Purchase')</h3>
+            </div>
+            <div class="card-body">
+              <p class="card-note note-direct">
+                Calls fbq('track', 'Purchase', {value: 29.99, currency: 'USD'})
+                directly.
+              </p>
+              <button type="button" class="next-btn" id="btn-purchase">
+                Fire Purchase ($29.99)
+              </button>
+            </div>
+          </div>
+
+          <!-- ── Card 4: AAM ── -->
+          <div class="test-card">
+            <div class="card-header">
+              <span class="card-tag tag-aam">AAM</span>
+              <span class="card-tag tag-direct">direct fbq() call</span>
+              <h3 class="card-title">
+                Automatic Advanced Matching — email field
+              </h3>
+            </div>
+            <div class="card-body">
+              <p class="card-note note-aam">
+                The identity plugin (loaded via signals-config.js) scans the
+                entire page for PII fields and hashes them automatically. Type
+                an email and click Submit — ud[em] will appear in the beacon.
+                Once captured, the hash persists for the page session and
+                attaches to all subsequent beacons from any event, including
+                InferredEvents.
+              </p>
+              <form action="#" onsubmit="return false;">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  class="email-input"
+                  autocomplete="email"
+                />
+                <button type="button" class="next-btn btn-purple" id="btn-aam">
+                  Submit &amp; fire Lead
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- ── Card 5: InferredEvents / SubscribedButtonClick ── -->
+          <div class="test-card">
+            <div class="card-header">
+              <span class="card-tag tag-inferred">InferredEvents</span>
+              <h3 class="card-title">SubscribedButtonClick — div.big_button</h3>
+            </div>
+            <div class="card-body">
+              <p class="card-note note-inferred">
+                The InferredEvents plugin fires SubscribedButtonClick
+                automatically on each label click. No direct fbq() call is made.
+              </p>
+              <form action="#" onsubmit="return false;" id="form-inferred">
+                <div class="big_button">
+                  <label class="radio big-opt"
+                    ><input type="radio" name="c5" style="display: none" />Going
+                    well overall</label
+                  >
+                </div>
+                <div class="big_button">
+                  <label class="radio big-opt"
+                    ><input type="radio" name="c5" style="display: none" />Some
+                    challenges</label
+                  >
+                </div>
+                <div class="big_button">
+                  <label class="radio big-opt"
+                    ><input
+                      type="radio"
+                      name="c5"
+                      style="display: none"
+                    />Pretty difficult</label
+                  >
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </main>
 
@@ -568,7 +679,7 @@
               >Adv. Matching
               <span
                 class="sig-info"
-                data-tip="Reactive detection only — activates when a beacon containing a hashed field (udff[em]) is intercepted. Will not show until a form with PII is submitted (Card 8)."
+                data-tip="Reactive detection only — activates when a beacon containing a hashed field (udff[em]) is intercepted. Will not show until a form with PII is submitted (Card 4)."
                 >ⓘ</span
               ></span
             >
@@ -614,9 +725,7 @@
 
     <script>
       // ── CONFIGURATION ────────────────────────────────────────────────────────
-      const PIXEL_ID =
-        new URLSearchParams(location.search).get("pixelId") ||
-        "1308318914571848";
+      const PIXEL_ID = "1308318914571848";
 
       document.getElementById("hdr-pid").textContent = PIXEL_ID;
 
@@ -624,10 +733,24 @@
       const eventLog = document.getElementById("event-log");
 
       const FB_STANDARD_EVENTS = new Set([
-        "PageView","ViewContent","Search","AddToCart","AddToWishlist",
-        "InitiateCheckout","AddPaymentInfo","Purchase","Lead",
-        "CompleteRegistration","Contact","CustomizeProduct","Donate",
-        "FindLocation","Schedule","StartTrial","SubmitApplication","Subscribe",
+        "PageView",
+        "ViewContent",
+        "Search",
+        "AddToCart",
+        "AddToWishlist",
+        "InitiateCheckout",
+        "AddPaymentInfo",
+        "Purchase",
+        "Lead",
+        "CompleteRegistration",
+        "Contact",
+        "CustomizeProduct",
+        "Donate",
+        "FindLocation",
+        "Schedule",
+        "StartTrial",
+        "SubmitApplication",
+        "Subscribe",
       ]);
 
       function logEntry(body) {
@@ -636,7 +759,10 @@
         const entry = document.createElement("div");
         entry.className = "log-entry";
         const d = new Date();
-        const ts = d.toTimeString().slice(0, 8) + "." + String(d.getMilliseconds()).padStart(3, "0");
+        const ts =
+          d.toTimeString().slice(0, 8) +
+          "." +
+          String(d.getMilliseconds()).padStart(3, "0");
         entry.innerHTML = `<span class="log-ts">${ts}</span><span class="log-body">${body}</span>`;
         eventLog.appendChild(entry);
         eventLog.scrollTop = eventLog.scrollHeight;
@@ -646,13 +772,15 @@
       function logInit(pixelId) {
         logEntry(
           `<span class="log-fn">fbq</span>(<wbr>` +
-          `<span class="log-a0">'init'</span>, ` +
-          `<span class="log-a1">'${pixelId}'</span>)`
+            `<span class="log-a0">'init'</span>, ` +
+            `<span class="log-a1">'${pixelId}'</span>)`,
         );
       }
 
       function logBlocked() {
-        logEntry('<span class="log-blocked">fbevents.js blocked (ad blocker or network error)</span>');
+        logEntry(
+          '<span class="log-blocked">fbevents.js blocked (ad blocker or network error)</span>',
+        );
       }
 
       document.getElementById("log-clear").addEventListener("click", () => {
@@ -703,12 +831,18 @@
           logEntry(body);
         }
 
-        const imgDesc = Object.getOwnPropertyDescriptor(HTMLImageElement.prototype, "src");
+        const imgDesc = Object.getOwnPropertyDescriptor(
+          HTMLImageElement.prototype,
+          "src",
+        );
         if (imgDesc && imgDesc.set) {
           Object.defineProperty(HTMLImageElement.prototype, "src", {
             configurable: true,
             get: imgDesc.get,
-            set(val) { onBeacon(val); imgDesc.set.call(this, val); },
+            set(val) {
+              onBeacon(val);
+              imgDesc.set.call(this, val);
+            },
           });
         }
 
@@ -839,223 +973,33 @@
 
       initPixel();
 
-      // ── TEST CARD BUILDER ────────────────────────────────────────────────────
+      // ── CARD EVENT LISTENERS ─────────────────────────────────────────────────
 
-      function makeCard(tag, tagClass, noteClass, title, note) {
-        const card = document.createElement("div");
-        card.className = "test-card";
+      document.getElementById("btn-lead").addEventListener("click", () => {
+        if (window.fbq) { fbq("track", "Lead"); refreshCookies(); }
+      });
 
-        const hdr = document.createElement("div");
-        hdr.className = "card-header";
+      document.getElementById("btn-cr").addEventListener("click", () => {
+        if (window.fbq) fbq("track", "CompleteRegistration", { status: true });
+      });
 
-        const tagEl = document.createElement("span");
-        tagEl.className = `card-tag ${tagClass}`;
-        tagEl.textContent = tag;
+      document.getElementById("btn-purchase").addEventListener("click", () => {
+        if (window.fbq) fbq("track", "Purchase", { value: 29.99, currency: "USD" });
+      });
 
-        const titleEl = document.createElement("h3");
-        titleEl.className = "card-title";
-        titleEl.textContent = title;
+      document.getElementById("btn-aam").addEventListener("click", () => {
+        if (window.fbq) { fbq("track", "Lead"); refreshCookies(); }
+      });
 
-        hdr.appendChild(tagEl);
-        hdr.appendChild(titleEl);
-
-        const body = document.createElement("div");
-        body.className = "card-body";
-
-        const noteEl = document.createElement("p");
-        noteEl.className = `card-note ${noteClass}`;
-        noteEl.textContent = note;
-
-        body.appendChild(noteEl);
-        card.appendChild(hdr);
-        card.appendChild(body);
-        return { card, body };
-      }
-
-      function makeFeedback(body) {
-        const fb = document.createElement("div");
-        fb.className = "card-feedback";
-        body.appendChild(fb);
-        return fb;
-      }
-
-      function flashFeedback(el, msg) {
-        el.textContent = msg;
-        clearTimeout(el._t);
-        el._t = setTimeout(() => {
-          el.textContent = "";
-        }, 3000);
-      }
-
-      function buildCards() {
-        const grid = document.getElementById("test-grid");
-
-        // ── Card 1: Direct — Lead ──
-        {
-          const { card, body } = makeCard(
-            "direct fbq() call",
-            "tag-direct",
-            "note-direct",
-            "fbq('track', 'Lead')",
-            "Calls fbq('track', 'Lead') directly.",
-          );
-          const fb = makeFeedback(body);
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "next-btn";
-          btn.textContent = "Fire Lead event";
-          btn.addEventListener("click", () => {
-            if (window.fbq) {
-              fbq("track", "Lead");
-              refreshCookies();
-              flashFeedback(fb, "✓ fbq('track', 'Lead') called");
-            }
-          });
-          body.appendChild(btn);
-          grid.appendChild(card);
-        }
-
-        // ── Card 2: Direct — CompleteRegistration ──
-        {
-          const { card, body } = makeCard(
-            "direct fbq() call",
-            "tag-direct",
-            "note-direct",
-            "fbq('track', 'CompleteRegistration')",
-            "Calls fbq('track', 'CompleteRegistration', {status: true}) directly.",
-          );
-          const fb = makeFeedback(body);
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "next-btn";
-          btn.textContent = "Fire CompleteRegistration";
-          btn.addEventListener("click", () => {
-            if (window.fbq) {
-              fbq("track", "CompleteRegistration", { status: true });
-              flashFeedback(
-                fb,
-                "✓ fbq('track', 'CompleteRegistration', {status:true}) called",
-              );
-            }
-          });
-          body.appendChild(btn);
-          grid.appendChild(card);
-        }
-
-        // ── Card 3: Direct — Purchase ──
-        {
-          const { card, body } = makeCard(
-            "direct fbq() call",
-            "tag-direct",
-            "note-direct",
-            "fbq('track', 'Purchase')",
-            "Calls fbq('track', 'Purchase', {value: 29.99, currency: 'USD'}) directly.",
-          );
-          const fb = makeFeedback(body);
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "next-btn";
-          btn.textContent = "Fire Purchase ($29.99)";
-          btn.addEventListener("click", () => {
-            if (window.fbq) {
-              fbq("track", "Purchase", { value: 29.99, currency: "USD" });
-              flashFeedback(
-                fb,
-                "✓ fbq('track', 'Purchase', {value:29.99, currency:'USD'}) called",
-              );
-            }
-          });
-          body.appendChild(btn);
-          grid.appendChild(card);
-        }
-
-        // ── Card 4: AAM — email field ──
-        {
-          const { card, body } = makeCard(
-            "AAM",
-            "tag-aam",
-            "note-aam",
-            "Automatic Advanced Matching — email field",
-            "The identity plugin (loaded via signals-config.js) scans form fields and hashes PII automatically. Type an email and click Submit — ud[em] will appear in the beacon if AAM is active. Once captured, the hash persists for the page session even if the field is cleared.",
-          );
-          const form = document.createElement("form");
-          form.action = "#";
-          form.onsubmit = () => false;
-          const fb = makeFeedback(body);
-
-          const emailInput = document.createElement("input");
-          emailInput.type = "email";
-          emailInput.name = "email";
-          emailInput.placeholder = "you@example.com";
-          emailInput.className = "email-input";
-          emailInput.autocomplete = "email";
-
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "next-btn btn-purple";
-          btn.textContent = "Submit & fire Lead";
-          btn.addEventListener("click", () => {
-            if (window.fbq) {
-              fbq("track", "Lead");
-              refreshCookies();
-              flashFeedback(
-                fb,
-                "✓ Lead fired — check event log for ud[em] if AAM picked up the email",
-              );
-            }
-          });
-
-          form.appendChild(emailInput);
-          form.appendChild(btn);
-          body.insertBefore(form, fb);
-          grid.appendChild(card);
-        }
-
-        // ── Card 5: div.big_button > label.radio → SubscribedButtonClick (InferredEvents) ──
-        {
-          const { card, body } = makeCard(
-            "InferredEvents",
-            "tag-inferred",
-            "note-inferred",
-            "SubscribedButtonClick — div.big_button",
-            "The InferredEvents plugin fires SubscribedButtonClick automatically on each label click. No direct fbq() call is made.",
-          );
-          const form = document.createElement("form");
-          form.action = "#";
-          form.onsubmit = () => false;
-          const fb = makeFeedback(body);
-
-          ["Going well overall", "Some challenges", "Pretty difficult"].forEach(
-            (opt) => {
-              const wrap = document.createElement("div");
-              wrap.className = "big_button";
-              const lbl = document.createElement("label");
-              lbl.className = "radio big-opt";
-              const inp = document.createElement("input");
-              inp.type = "radio";
-              inp.name = "c5";
-              inp.style.display = "none";
-              lbl.appendChild(inp);
-              lbl.appendChild(document.createTextNode(opt));
-              inp.addEventListener("click", (e) => e.stopPropagation());
-              lbl.addEventListener("click", (e) => {
-                if (e.target === inp) return;
-                inp.checked = true;
-                if (window.fbq)
-                  flashFeedback(
-                    fb,
-                    `✓ Clicked "${opt}" — watch for SubscribedButtonClick in log`,
-                  );
-              });
-              wrap.appendChild(lbl);
-              form.appendChild(wrap);
-            },
-          );
-
-          body.insertBefore(form, fb);
-          grid.appendChild(card);
-        }
-      }
+      document.querySelectorAll("#form-inferred input[type=radio]").forEach((inp) => {
+        inp.addEventListener("click", (e) => e.stopPropagation());
+      });
+      document.querySelectorAll("#form-inferred label").forEach((lbl) => {
+        lbl.addEventListener("click", (e) => {
+          if (e.target.type === "radio") return;
+          lbl.querySelector("input").checked = true;
+        });
+      });
 
       // ── INIT ─────────────────────────────────────────────────────────────────
       function parseBrowser(ua) {
@@ -1078,7 +1022,6 @@
 
       updateSignals();
       refreshCookies();
-      buildCards();
     </script>
   </body>
 </html>
