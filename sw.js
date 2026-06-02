@@ -6,10 +6,8 @@ self.addEventListener("fetch", (event) => {
   if (!url.includes("connect.facebook.net")) return;
 
   if (url.includes("fbevents")) {
-    event.respondWith(fetch(event.request).then(() => fetch("/fbevents.js")));
+    event.respondWith(fetch("/fbevents.js"));
   } else if (url.includes("signals/config/")) {
-    event.respondWith(
-      fetch(event.request).then(() => fetch("/signals-config.js")),
-    );
+    event.respondWith(fetch("/signals-config.js"));
   }
 });
