@@ -960,17 +960,38 @@
         });
       }
 
+      // The SW always serves fbevents.js from local, so loadFbevents() onload
+      // fires even when an ad blocker is active. Probe a connect.facebook.net
+      // URL the SW does NOT intercept ("fbevents" and "signals/config/" are the
+      // only patterns). The browser falls through to a real network request for
+      // anything else, where ad blockers can intercept it.
+      async function detectAdBlock() {
+        try {
+          await fetch("https://connect.facebook.net/en_US/", {
+            mode: "no-cors",
+            cache: "no-store",
+          });
+          return false;
+        } catch {
+          return true;
+        }
+      }
+
       async function initPixel() {
         installStub();
-        try {
-          await loadFbevents();
+        const [, cdnBlocked] = await Promise.all([
+          loadFbevents().catch(() => null),
+          detectAdBlock(),
+        ]);
+        if (cdnBlocked) pixelLoaded = false;
+        if (pixelLoaded) {
           fbq("init", PIXEL_ID);
           fbq("track", "PageView");
           refreshCookies();
           updateSignals();
           setTimeout(refreshCookies, 600);
           setTimeout(refreshCookies, 2500);
-        } catch (_) {
+        } else {
           logBlocked();
           updateSignals();
         }
